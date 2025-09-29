@@ -186,11 +186,11 @@
       <form id="signinForm" autocomplete="off" onsubmit="return false;">
         <div class="input-box">
           <span class="icon">
-            <!-- Use your email icon here: -->
-            <img src="assets/email.png" alt="" width="21" height="21" style="vertical-align: middle;"/>
+            <!-- Use your Username icon here: -->
+            <img src="assets/cont.png" alt="" width="21" height="21" style="vertical-align: middle;"/>
             <!-- Or emoji fallback: ✉️ -->
           </span>
-          <input type="email" class="input-field" id="email" placeholder="Email" aria-label="Email" />
+          <input type="Username" class="input-field" id="Username" placeholder="Username" aria-label="Username" />
         </div>
         <div class="input-box">
           <span class="icon">
@@ -223,9 +223,9 @@
   </div>
   <script>
     function submitSignIn() {
-      var email = document.getElementById('email').value.trim();
+      var Username = document.getElementById('Username').value.trim();
       var password = document.getElementById('password').value.trim();
-      if (!email || !password) {
+      if (!Username || !password) {
         alert("Please fill all the blocks.");
         return false;
       }

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=390, initial-scale=1"/>
+  <title>Profile</title>
+  <style>
+    html, body { margin:0; padding:0; height:100%; width:100vw; background:#dae3f0;}
+    body { min-height:100vh; background:#dae3f0; display:flex; justify-content:center; align-items:center;}
+    .container {
+      width:390px; height:844px;
+      background:#f7f9fa;
+      border-radius:28px;
+      box-shadow:0 2px 16px #3375c84c;
+      overflow:hidden;
+      position:relative;
+      display:flex;
+      flex-direction:column;
+    }
+    .header-bg {
+      background:#3375c8;
+      height:235px;
+      width:100%;
+      position:absolute; left:0; top:0; z-index:0;
+      border-bottom-left-radius:50px 36px;
+      border-bottom-right-radius:50px 36px;
+    }
+    .profile-header {
+      z-index:2; position:relative; text-align:center; padding-top:23px; display:flex; align-items:center; justify-content:space-between; padding-left:16px; padding-right:16px;
+    }
+    .back-btn {
+      font-size:25px; color:#fff; font-weight:bold; background:none; border:none; cursor:pointer;
+    }
+    .profile-title { color:#fff; font-size:21px; font-weight:600; flex:1; text-align:center;}
+    .profile-top { margin-top:10px; z-index:2; position:relative; display:flex; flex-direction:column; align-items:center;}
+    .profile-img {
+      width:86px;height:86px;
+      border-radius:50%;
+      border:5px solid #fff;
+      object-fit:cover;
+      box-shadow:0 2px 12px #3375c82e;
+    }
+    .profile-name {
+      margin-top:10px;
+      font-size:17px;
+      font-weight:700;
+      color:#360927;
+      letter-spacing:.01em;
+      text-align:center;
+    }
+    .profile-id {
+      font-size:13px; color:#0c1925; margin-top:2px;
+      letter-spacing:.03em;
+      text-align:center;
+    }
+    .profile-options {
+      margin-top:33px;
+      width:84%; 
+      display:flex;
+      flex-direction:column;
+      gap:21px;
+      align-items:center;
+    }
+    .option-btn {
+      width:100%; background:#e7f0fb; border-radius:15px;
+      display:flex; align-items:center; padding:13px 18px; font-size:15px; color:#2563a3; font-weight:600; border:none; cursor:pointer; transition:background 0.17s;
+      box-shadow:0 1px 4px #3375c80b;
+    }
+    .option-btn:hover { background:#dae7fa;}
+    .option-icon {
+      width:31px; height:31px; background:#3375c8; border-radius:11px; display:flex; align-items:center; justify-content:center; margin-right:16px;
+    }
+    /* SVG icon size for consistency */
+    .option-icon svg { width:18px; height:18px; color:#fff;}
+    @media (max-width:480px) {
+      .container {height:100vh;border-radius:0;}
+      .header-bg {height:195px;}
+      .profile-options {margin-top:15px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header-bg"></div>
+    <div class="profile-header">
+      <button class="back-btn" onclick="window.history.back()">&larr;</button>
+      <div class="profile-title">Profile</div>
+      <div style="width:25px;"></div>
+    </div>
+    <div class="profile-top">
+      <img class="profile-img" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile"/>
+      <div class="profile-name">Jeevasuryaa</div>
+      <div class="profile-id">ID: 25030024</div>
+    </div>
+    <div class="profile-options">
+      <button class="option-btn">
+        <span class="option-icon" style="background:#68b6eb;">
+          <!-- User icon -->
+          <svg fill="none" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4.5" stroke="#fff" stroke-width="2"/><ellipse cx="12" cy="19" rx="6" ry="2.75" stroke="#fff" stroke-width="2"/></svg>
+        </span>
+        Edit Profile
+      </button>
+      <button class="option-btn">
+        <span class="option-icon" style="background:#4eaeea;">
+          <!-- Shield icon -->
+          <svg fill="none" viewBox="0 0 24 24"><path d="M12 21c4.284-1.09 7-4.137 7-8.27V6.362c0-.521-.32-.983-.803-1.158l-5.5-2.021a2 2 0 0 0-1.394 0l-5.5 2.021A1.206 1.206 0 0 0 5 6.362V12.73C5 16.862 7.716 19.91 12 21Z" stroke="#fff" stroke-width="2"/></svg>
+        </span>
+        Security
+      </button>
+      <button class="option-btn">
+        <span class="option-icon" style="background:#2463a5;">
+          <!-- Gear icon -->
+          <svg fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" stroke="#fff" stroke-width="2"/><path stroke="#fff" stroke-width="2" d="M19.4 15.9l1.65 2.85a1 1 0 0 1-1.36 1.36l-2.85-1.65a8.1 8.1 0 0 1-3.84 1.11V21a1 1 0 0 1-2 0v-2.43a8.063 8.063 0 0 1-3.83-1.11l-2.85 1.65A1 1 0 0 1 2.95 18.75l1.65-2.85A8.1 8.1 0 0 1 3.5 12c0-.75.1-1.48.28-2.17L2.1 7a1 1 0 1 1 1.36-1.36l2.85 1.65a8.063 8.063 0 0 1 3.83-1.11V3a1 1 0 1 1 2 0v2.43c1.33.23 2.61.64 3.84 1.11l2.85-1.65A1 1 0 0 1 21.9 7l-1.65 2.83c.19.69.28 1.42.28 2.17 0 .75-.1 1.48-.28 2.16Z"/></svg>
+        </span>
+        Setting
+      </button>
+      <button class="option-btn">
+        <span class="option-icon" style="background:#53cdf3;">
+          <!-- Help icon -->
+          <svg fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="2"/><path d="M9.09 9a3 3 0 1 1 5.82 1c0 2-3 3-3 3" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17" r="1" fill="#fff"/></svg>
+        </span>
+        Help
+      </button>
+      <button class="option-btn">
+        <span class="option-icon" style="background:#3fa9f5;">
+          <!-- Logout icon -->
+          <svg fill="none" viewBox="0 0 24 24"><path d="M16 17v1a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v1" stroke="#fff" stroke-width="2"/><path d="M10 12h10m0 0-3-3m3 3-3 3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        Logout
+      </button>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=272, initial-scale=1"/>
+  <title>Spendwise Permission Prompt</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #e6e6e6;
+      font-family: Arial, sans-serif;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      background: #f8f6ed;
+      width: 272px;
+      height: 565px;
+      border-radius: 0;
+      box-sizing: border-box;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      overflow: hidden;
+    }
+    .welcome-title {
+      font-size: 25px;
+      font-weight: 700;
+      margin-top: 38px;
+      margin-left: 18px;
+      margin-bottom: 44px;
+      color: #181818;
+      letter-spacing: 0.01em;
+      font-family: Arial, sans-serif;
+    }
+    .logo-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .owl-logo {
+      width: 60px;
+      margin-bottom: 12px;
+      /* Replace src with your owl asset */
+    }
+    .brand {
+      font-size: 16px;
+      letter-spacing: 0.09em;
+      color: #151515;
+      font-weight: bold;
+      font-family: Arial, sans-serif;
+      margin-bottom: 9px;
+    }
+    .brand span {
+      color: #989991;
+      font-size: 14px;
+      font-weight: 500;
+      margin-left: -3px;
+    }
+
+    .permission-card {
+      background: #2864d4;
+      border-radius: 24px 24px 0 0;
+      margin-top: 29px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 22px 16px 0 16px;
+    }
+    .msg-icon-box {
+      background: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 49px; height: 49px;
+      margin-bottom: 12px;
+    }
+    .msg-icon {
+      width: 44px; height: 44px;
+      /* Replace src with your message icon */
+    }
+    .perm-message {
+      font-size: 14.4px;
+      color: #fff;
+      text-align: center;
+      font-weight: 520;
+      margin-top: 0;
+      margin-bottom: 19px;
+      line-height: 1.33;
+      letter-spacing: 0.01em;
+    }
+    .btn-row {
+      margin-top: 31px;
+      margin-bottom: 18px;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 19px;
+    }
+    .perm-btn {
+      width: 49%;
+      background: #fff;
+      color: #2864d4;
+      border: none;
+      font-size: 17px;
+      font-family: Arial, sans-serif;
+      font-weight: 600;
+      border-radius: 8px;
+      padding: 11px 0;
+      cursor: pointer;
+      transition: background 0.13s, color 0.13s;
+      outline: none;
+    }
+    .perm-btn:first-child {
+      color: #2864d4;
+    }
+    .perm-btn:active {
+      background: #e6e7fd;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="welcome-title">Welcome.</div>
+    <div class="logo-block">
+      <img class="owl-logo" src="assets/owl.png" alt="Owl"/>
+      <div class="brand">
+        SPEND<span>WISE</span>
+      </div>
+    </div>
+    <div class="permission-card">
+      <div class="msg-icon-box">
+        <img class="msg-icon" src="assets/message.png" alt="SMS Message"/>
+      </div>
+      <div class="perm-message">
+        To automatically Extract your expenses, we need your permission to read transaction messages from your bank. Would you like to grant this permission?
+      </div>
+      <div class="btn-row">
+        <button class="perm-btn" onclick="allowPermission()">Allow</button>
+        <button class="perm-btn" onclick="cancelPermission()">Cancel</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    function allowPermission() {
+      window.location.href = "../home.html";
+    }
+    function cancelPermission() {
+      alert("Permission Denied!");
+      window.location.href = "signin.html";
+    }
+  </script>
+</body>
+</html>

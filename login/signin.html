@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=320, initial-scale=1" />
+  <title>Sign In</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #e6e6e6;
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .container {
+      width: 387px;
+      height: 786px;
+      background: #f8f6ed;
+      border-radius: 0;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: none;
+      border: none;
+    }
+    .content {
+      width: 91%;
+      margin-top: 43px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .headline {
+      font-size: 2.3rem;
+      font-weight: bold;
+      color: #161616;
+      margin-bottom: 37px;
+      margin-left: 2px;
+      font-family: Arial, sans-serif;
+    }
+    .input-box {
+      position: relative;
+      margin-bottom: 18px;
+    }
+    .icon {
+      position: absolute;
+      left: 16px;
+      top: 52%;
+      transform: translateY(-50%);
+      font-size: 20px;
+      color: #294b3a;
+      pointer-events: none;
+    }
+    .input-field {
+      width: 100%;
+      height: 51px;
+      padding: 0 16px 0 48px;
+      border: 2px solid #7c9287;
+      border-radius: 10px;
+      background: #f8f6ed;
+      font-size: 17px;
+      color: #303d35;
+      outline: none;
+      font-family: Arial, sans-serif;
+      font-weight: 500;
+      box-sizing: border-box;
+      margin-bottom: 0;
+      letter-spacing: 0.01rem;
+    }
+    .input-field::placeholder {
+      color: #828282;
+      font-weight: 500;
+      font-size: 16px;
+    }
+    .forgot {
+      text-align: right;
+      margin-top: 8px;
+      margin-bottom: 14px;
+      margin-right: 3px;
+      font-size: 15px;
+      color: #294b3a;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+    }
+    .sign-in-btn {
+      width: 100%;
+      background: #265fd2;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 20px;
+      font-weight: bold;
+      padding: 16px;
+      margin: 16px 0 15px 0;
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+      letter-spacing: 0.04em;
+      transition: background 0.15s;
+    }
+    .sign-in-btn:hover {
+      background: #164e96;
+    }
+    .divider-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin: 20px 0 2px 0;
+      position: relative;
+    }
+    .divider-row:before, .divider-row:after {
+      content: "";
+      flex: 1;
+      border-bottom: 2px solid #7c9287;
+      margin: 0 9px;
+      height: 1px;
+    }
+    .divider-row span {
+      font-size: 18px;
+      font-weight: 700;
+      color: #212f22;
+      letter-spacing: 0.06em;
+    }
+    .signin-methods-label {
+      text-align: center;
+      font-size: 17px;
+      font-weight: bold;
+      color: #808080;
+      margin-top: 15px;
+      margin-bottom: 12px;
+      font-family: Arial, sans-serif;
+    }
+    .social-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 31px;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+    .social-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #fff;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: none;
+      outline: none;
+      padding: 0;
+      margin: 0;
+    }
+    .social-btn img {
+      width: 23px;
+      height: 23px;
+      display: block;
+    }
+    .social-btn.x {
+      background: #181818;
+    }
+    .social-btn.x img {
+      background: transparent;
+    }
+    /* Responsive fix for smaller widths */
+    @media (max-width: 400px) {
+      .container { width: 100vw; }
+      .content { width: 97%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="content">
+      <div class="headline">Sign In</div>
+      <form id="signinForm" autocomplete="off" onsubmit="return false;">
+        <div class="input-box">
+          <span class="icon">
+            <!-- Use your email icon here: -->
+            <img src="assets/email.png" alt="" width="21" height="21" style="vertical-align: middle;"/>
+            <!-- Or emoji fallback: ✉️ -->
+          </span>
+          <input type="email" class="input-field" id="email" placeholder="Email" aria-label="Email" />
+        </div>
+        <div class="input-box">
+          <span class="icon">
+            <!-- Use your password icon here: -->
+            <img src="assets/lock.png" alt="" width="21" height="21" style="vertical-align: middle;"/>
+            <!-- Or emoji fallback: 🔒 -->
+          </span>
+          <input type="password" class="input-field" id="password" placeholder="Password" aria-label="Password" />
+        </div>
+        <div class="forgot" onclick="forgotPassword()">Forgot password ?</div>
+        <button type="button" class="sign-in-btn" onclick="submitSignIn()">SIGN IN</button>
+      </form>
+      <div class="divider-row"><span>OR</span></div>
+      <div class="signin-methods-label">Sign In With</div>
+      <div class="social-row">
+        <button class="social-btn google" title="Google">
+          <!-- Replace with your Google icon -->
+          <img src="assets/google.png" alt="Google" />
+        </button>
+        <button class="social-btn facebook" title="Facebook">
+          <!-- Replace with your Facebook icon -->
+          <img src="assets/face.png" alt="Facebook" />
+        </button>
+        <button class="social-btn x" title="X">
+          <!-- Replace with your X icon -->
+          <img src="assets/x.png" alt="X" />
+        </button>
+      </div>
+    </div>
+  </div>
+  <script>
+    function submitSignIn() {
+      var email = document.getElementById('email').value.trim();
+      var password = document.getElementById('password').value.trim();
+      if (!email || !password) {
+        alert("Please fill all the blocks.");
+        return false;
+      }
+      window.location.href = "message.html";
+      return true;
+    }
+    function forgotPassword() {
+      window.location.href = "forgot.html";
+    }
+  </script>
+</body>
+</html>

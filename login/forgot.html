@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=438, initial-scale=1"/>
+  <title>Reset Password Flow</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #e6e6e6;
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container {
+      width: 438px;
+      height: 835px;
+      background: #f8f6ed;
+      box-sizing: border-box;
+      border-radius: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: none;
+    }
+    .screen {
+      width: 100%;
+      height: 100%;
+      background: #f8f6ed;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .screen.visible {
+      display: flex;
+    }
+
+    /* === FORGOT PASSWORD === */
+    .forgot-header {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      margin-top: 36px;
+      margin-bottom: 32px;
+    }
+    .arrow-btn {
+      font-size: 24px;
+      background: none;
+      border: none;
+      color: #191919;
+      cursor: pointer;
+      margin-left: 18px;
+      padding: 0;
+      line-height: 1;
+    }
+    .forgot-title {
+      font-size: 21px;
+      font-weight: 700;
+      margin-left: 61px;
+      flex: 1;
+      letter-spacing: 0.04em;
+      color: #161616;
+    }
+    .forgot-desc {
+      margin-top: 10px;
+      margin-left: 41px;
+      margin-bottom: 32px;
+      color: #9c9c9c;
+      font-size: 15px;
+      font-weight: 490;
+      letter-spacing: 0.01em;
+      line-height: 1.4;
+      max-width: 351px;
+      text-align: left;
+    }
+    .phone-input-row {
+      display: flex;
+      align-items: center;
+      width: 82%;
+      margin-left: 41px;
+      margin-bottom: 22px;
+      position: relative;
+    }
+    .phone-input {
+      height: 47px;
+      border: 1.6px solid #818f79;
+      border-radius: 7px;
+      background: #fff;
+      flex: 1;
+      padding-left: 16px;
+      font-size: 16px;
+      font-weight: 510;
+      color: #222;
+      outline: none;
+      letter-spacing: 0.01rem;
+      font-family: Arial, sans-serif;
+      box-sizing: border-box;
+    }
+    .check-btn {
+      background: none;
+      border: none;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 23px;
+      color: #244d33;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+    }
+    .forgot-next-btn {
+      margin-top: 17px;
+      margin-left: 41px;
+      width: 82%;
+      background: #2864d4;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 19px;
+      font-weight: 700;
+      padding: 16px 0;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+      transition: background 0.15s;
+    }
+    .forgot-next-btn:active {
+      background: #1846a2;
+    }
+    .error-message {
+      color: #bb1b1b;
+      font-size: 15px;
+      margin-top: 8px;
+      text-align: left;
+      margin-left: 43px;
+      height: 20px;
+    }
+
+    /* === OTP SCREEN === */
+    .otp-back-row {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      margin-top: 32px;
+      margin-bottom: 16px;
+    }
+    .otp-back-btn {
+      font-size: 22px;
+      background: none;
+      border: none;
+      color: #242424;
+      cursor: pointer;
+      margin-left: 24px;
+      padding: 0;
+      line-height: 1;
+    }
+    .otp-icon {
+      width: 104px;
+      height: 104px;
+      margin-top: 6px;
+      margin-bottom: 22px;
+      display: block;
+    }
+    .otp-title {
+      font-size: 22px;
+      font-weight: bold;
+      margin-top: 0;
+      margin-bottom: 13px;
+      text-align: center;
+      letter-spacing: 0.008em;
+      color: #111;
+      font-family: Arial,sans-serif;
+    }
+    .otp-desc-row {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 19px;
+      color: #838383;
+      font-size: 16px;
+      font-weight: 500;
+      font-family: Arial, sans-serif;
+    }
+    .otp-fields-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 17px;
+      margin-top: 2px;
+    }
+    .otp-field {
+      width: 50px;
+      height: 52px;
+      border: 2px solid #818f79;
+      border-radius: 7px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 700;
+      background: #fff;
+      outline: none;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      box-sizing: border-box;
+      caret-color: #1668c4;
+    }
+    .otp-links-row {
+      font-size: 15.5px;
+      color: #7a7a7a;
+      margin-top: 3px;
+      margin-bottom: 24px;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      width: 100%;
+    }
+    .otp-links-row .resend {
+      color: #2864d4;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .otp-btns-row {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 7px;
+      width: 82%;
+    }
+    .otp-action-btn {
+      flex: 1;
+      border-radius: 9px;
+      font-size: 17.5px;
+      font-weight: bold;
+      padding: 14px 0;
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+    }
+    .otp-action-btn.cancel {
+      background: #fff;
+      color: #2864d4;
+      border: 2px solid #2864d4;
+      margin-right: 4px;
+      transition: background 0.13s, color 0.13s;
+    }
+    .otp-action-btn.cancel:active {
+      background: #e9f1ff;
+    }
+    .otp-action-btn.verify {
+      background: #2864d4;
+      color: #fff;
+      border: none;
+      margin-left: 4px;
+      transition: background 0.13s;
+    }
+    .otp-action-btn.verify:active {
+      background: #174c94;
+    }
+    .otp-error {
+      color: #bb1b1b;
+      font-size: 14px;
+      min-height: 22px;
+      margin: 2px 0 0 8px;
+      text-align: left;
+      width: 88%;
+    }
+
+    /* === CREATE NEW PASSWORD SCREEN === */
+    .newpass-header {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      margin-top: 36px;
+      margin-bottom: 24px;
+    }
+    .newpass-back-btn {
+      font-size: 24px;
+      background: none;
+      border: none;
+      color: #191919;
+      cursor: pointer;
+      margin-left: 18px;
+      padding: 0;
+      line-height: 1;
+    }
+    .newpass-title {
+      font-size: 23px;
+      font-weight: 700;
+      margin-left: 54px;
+      flex: 1;
+      letter-spacing: 0.02em;
+      color: #161616;
+      font-family: Arial, sans-serif;
+    }
+    .newpass-desc {
+      margin-top: 6px;
+      margin-bottom: 32px;
+      text-align: center;
+      color: #9c9c9c;
+      font-size: 17px;
+      font-weight: 480;
+      letter-spacing: 0.01em;
+      line-height: 1.38;
+    }
+    .pass-input-block {
+      position: relative;
+      width: 85%;
+      margin: 0 auto 10px auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .pass-input {
+      width: 100%;
+      height: 50px;
+      border-radius: 8px;
+      border: 1.6px solid #7c9287;
+      background: #f8f6ed;
+      font-size: 17px;
+      font-weight: 530;
+      color: #716e67;
+      padding-left: 16px;
+      padding-right: 48px;
+      outline: none;
+      font-family: Arial, sans-serif;
+      letter-spacing: 0.01rem;
+      box-sizing: border-box;
+    }
+    .toggle-eye {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 22px;
+      color: #8f939b;
+      padding: 0;
+      opacity: 0.85;
+    }
+    .password-hint {
+      font-size: 13px;
+      font-weight: 480;
+      color: #2d3235;
+      margin-top: 3px;
+      margin-bottom: 10px;
+      margin-left: 1px;
+      letter-spacing: 0;
+      font-family: Arial, sans-serif;
+      opacity: 0.7;
+    }
+    .password-match-hint {
+      font-size: 13px;
+      font-weight: 480;
+      color: #2d3235;
+      margin-top: 3px;
+      margin-bottom: 16px;
+      margin-left: 1px;
+      opacity: 0.7;
+    }
+    .reset-btn {
+      margin-top: 18px;
+      width: 85%;
+      background: #2864d4;
+      color: #fff;
+      border: none;
+      border-radius: 11px;
+      font-size: 20px;
+      font-weight: 700;
+      padding: 17px 0 15px 0;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+      transition: background 0.15s;
+    }
+    .reset-btn:active {
+      background: #1851b8;
+    }
+    .newpass-error {
+      color: #bb1b1b;
+      font-size: 15px;
+      min-height: 22px;
+      margin: 4px 0 0 35px;
+      text-align: left;
+      width: 78%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Forgot Password Screen -->
+    <div id="forgotScreen" class="screen visible">
+      <div class="forgot-header">
+        <button class="arrow-btn" title="Back" onclick="history.back()">&larr;</button>
+        <span class="forgot-title">Forgot Password</span>
+      </div>
+      <div class="forgot-desc">
+        Enter your phone number. You will receive a otp to create a new password via sms.
+      </div>
+      <div class="phone-input-row">
+        <input class="phone-input" type="text" maxlength="14" placeholder="Phone Number" id="phoneInput"/>
+        <button class="check-btn" type="button" tabindex="-1" style="pointer-events:none;opacity:0.55;">
+          <!-- Checkmark icon: Replace with SVG if you want -->
+          <span style="font-size: 25px; color:#284733;">&#10003;</span>
+        </button>
+      </div>
+      <div class="error-message" id="forgotError"></div>
+      <button class="forgot-next-btn" onclick="goToOtp()">Next</button>
+    </div>
+    <!-- OTP Screen -->
+    <div id="otpScreen" class="screen">
+      <div class="otp-back-row">
+        <button class="otp-back-btn" title="Back" onclick="backToForgot()">&larr;</button>
+      </div>
+      <!-- Replace src with your mail/check SVG/icon -->
+      <img class="otp-icon" src="assets/verify.png" alt="Mail Icon"/>
+      <div class="otp-title">Verification Code</div>
+      <div class="otp-desc-row">
+        Enter the 5-digit code we’ve sent to <span style="font-weight:bold;">******97</span>
+      </div>
+      <div class="otp-fields-row">
+        <input class="otp-field" type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" id="otp0"/>
+        <input class="otp-field" type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" id="otp1"/>
+        <input class="otp-field" type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" id="otp2"/>
+        <input class="otp-field" type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" id="otp3"/>
+        <input class="otp-field" type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" id="otp4"/>
+      </div>
+      <div class="otp-links-row">
+        Didn't receive the OTP? <span class="resend" onclick="resendOtp()">Resend</span>
+      </div>
+      <div class="otp-btns-row">
+        <button class="otp-action-btn cancel" type="button" onclick="backToForgot()">Cancel</button>
+        <button class="otp-action-btn verify" type="button" onclick="verifyOtp()">Verify</button>
+      </div>
+      <div class="otp-error" id="otpError"></div>
+    </div>
+    <!-- Create New Password Screen -->
+    <div id="newPassScreen" class="screen">
+      <div class="newpass-header">
+        <button class="newpass-back-btn" title="Back" onclick="backToOtp()">&larr;</button>
+        <span class="newpass-title">Create New Password</span>
+      </div>
+      <div class="newpass-desc">
+        Enter new password below to<br>complete the reset process
+      </div>
+      <div class="pass-input-block">
+        <input class="pass-input" id="np1" type="password" placeholder="PASSWORD" autocomplete="new-password"/>
+        <button class="toggle-eye" tabindex="-1" type="button" onclick="togglePass('np1', this)">
+          <!-- You can use your own SVG/PNG here -->
+          <span>&#128065;</span>
+        </button>
+        <div class="password-hint">Password must contain at least 12 characters</div>
+      </div>
+      <div class="pass-input-block">
+        <input class="pass-input" id="np2" type="password" placeholder="CONFIRM PASSWORD" autocomplete="new-password"/>
+        <button class="toggle-eye" tabindex="-1" type="button" onclick="togglePass('np2', this)">
+          <span>&#128065;</span>
+        </button>
+        <div class="password-match-hint">Password must be identical</div>
+      </div>
+      <div class="newpass-error" id="newPassError"></div>
+      <button class="reset-btn" type="button" onclick="resetPassword()">RESET PASSWORD</button>
+    </div>
+  </div>
+  <script>
+    // NAVIGATION & LOGIC
+    function goToOtp() {
+      var phone = document.getElementById('phoneInput').value.trim();
+      var error = document.getElementById('forgotError');
+      error.textContent = "";
+      if (!phone.match(/^\d{8,14}$/)) {
+        error.textContent = "Enter a valid phone number.";
+        return;
+      }
+      showScreen("otpScreen");
+      setTimeout(() => document.getElementById('otp0').focus(), 200);
+    }
+    function backToForgot() {
+      showScreen("forgotScreen");
+    }
+    function showScreen(id) {
+      document.getElementById("forgotScreen").classList.remove("visible");
+      document.getElementById("otpScreen").classList.remove("visible");
+      document.getElementById("newPassScreen").classList.remove("visible");
+      document.getElementById(id).classList.add("visible");
+    }
+    // OTP Input focus logic
+    const otpFields = ['otp0','otp1','otp2','otp3','otp4'];
+    otpFields.forEach((id, idx) => {
+      setTimeout(() => {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener('input', function(e){
+          if (this.value.length > 1) this.value = this.value[0];
+          if (this.value && idx < 4) document.getElementById(otpFields[idx+1]).focus();
+        });
+        el.addEventListener('keydown', function(e){
+          if (['Backspace','Delete'].includes(e.key) && !this.value && idx > 0) {
+            document.getElementById(otpFields[idx-1]).focus();
+          }
+        });
+      }, 100);
+    });
+    function resendOtp() {
+      alert('OTP resent!');
+    }
+    function verifyOtp() {
+      var allFilled = otpFields.every((id) =>
+        document.getElementById(id).value.match(/^\d$/)
+      );
+      if (!allFilled) {
+        document.getElementById('otpError').textContent = 'Enter the 5-digit code.';
+        return;
+      }
+      document.getElementById('otpError').textContent = '';
+      showScreen("newPassScreen");
+      setTimeout(()=>document.getElementById("np1").focus(), 200);
+    }
+    function backToOtp() {
+      showScreen("otpScreen");
+    }
+    // Password field toggling
+    function togglePass(id, el) {
+      var input = document.getElementById(id);
+      input.type = input.type === "password" ? "text" : "password";
+      // Optionally swap icon if using a different eye SVG/PNG
+    }
+    function resetPassword() {
+      var p1 = document.getElementById('np1').value;
+      var p2 = document.getElementById('np2').value;
+      var err = document.getElementById('newPassError');
+      err.textContent = "";
+      if (p1.length < 12) {
+        err.textContent = "Password must be at least 12 characters.";
+        return;
+      }
+      if (p1 !== p2) {
+        err.textContent = "Passwords do not match.";
+        return;
+      }
+      err.textContent = "";
+      alert("Password reset successful!");
+      window.location.href = "signin.html";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=390, initial-scale=1"/>
+  <title>Expenditure Analysis</title>
+  <style>
+    html, body {
+      margin:0;
+      padding:0;
+      height:100%;
+      width:100vw;
+      background:#dae3f0;
+    }
+    body {
+      min-height:100vh;
+      background:#dae3f0;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+    .container {
+      width:390px;
+      height:844px;
+      background:#f7f9fa;
+      border-radius:28px;
+      box-shadow:0 2px 16px #3375c84c;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      position:relative;
+      /* This added to allow footer buttons at the bottom */
+      justify-content: space-between;
+      padding-bottom: 20px;
+    }
+    .header-bg {
+      background:#3375c8;
+      height:236px;
+      width:100%;
+      position:absolute;
+      left:0;
+      top:0;
+      z-index:0;
+    }
+    .analysis-header {
+      position:relative;
+      z-index:2;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:15px 22px 0 15px;
+      height:68px;
+    }
+    .header-title {
+      flex:1;
+      color:#fff;
+      font-size:22px;
+      font-weight:bold;
+      text-align:center;
+      letter-spacing:0.01em;
+    }
+    .back-btn {
+      font-size:26px;
+      color:#fff;
+      font-weight:bold;
+      cursor:pointer;
+      margin-right:15px;
+    }
+    .data-card {
+      width:93%;
+      background:#3375c8;
+      border-radius:19px;
+      margin:38px auto 0 auto;
+      padding:21px 22px 17px 22px;
+      box-shadow:0 2px 10px #1867b013;
+      color:#fff;
+      position:relative;
+      z-index:2;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+    .top-row {
+      width:100%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .stat-col {
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+    .stat-label {
+      font-size:13px;
+      color:#dae7fa;
+      font-weight:600;
+      text-align:center;
+    }
+    .stat-value {
+      font-size:22px;
+      color:#fff;
+      font-weight:bold;
+      margin-top:2px;
+    }
+    .stat-value.expense { color:#ffd5dc; }
+    .divider {
+      width:2px;
+      background:#fff6;
+      height:33px;
+      margin:0 15px;
+    }
+    .progress-bar-container {
+      width:100%;
+      margin:13px 0 2px 0;
+    }
+    .progress-bg {
+      width:100%;
+      height:11px;
+      background:#ddefff;
+      border-radius:7px;
+      overflow:hidden;
+    }
+    .progress-bar {
+      background:#fff;
+      height:100%;
+      width:30%;
+      border-radius:7px 0 0 7px;
+      transition:width .4s;
+    }
+    .progress-label-row {
+      width:100%;
+      display:flex;
+      justify-content:space-between;
+      margin-top:4px;
+      font-size:14px;
+      font-weight:600;
+    }
+    .progress-percent { color:#ffb500; }
+    .progress-budget { color:#fff; }
+    .progress-note {
+      font-size:13px;
+      color:#eaefff;
+      margin-top:7px;
+      text-align:left;
+      width:100%;
+      font-weight:500;
+    }
+    .white-card {
+      background:#fff;
+      width:92%;
+      border-radius:23px;
+      margin:21px auto 0 auto;
+      box-shadow:0 2px 10px #1867b013;
+      padding:19px 10px 18px 10px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      min-height:308px;
+    }
+    .tab-btn-row {
+      width:89%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin:0 auto 15px auto;
+      background:#e4ecfa;
+      border-radius:23px;
+      padding:4px;
+    }
+    .tab-btn {
+      flex:1;
+      margin:0 2px;
+      padding:8px 0 8px 0;
+      font-size:17px;
+      font-weight:600;
+      color:#3375c8;
+      background:none;
+      border:none;
+      border-radius:14px;
+      cursor:pointer;
+      transition:background 0.18s,color 0.18s;
+    }
+    .tab-btn.selected {
+      background:#3375c8;
+      color:#fff;
+    }
+    .graph-header {
+      font-size:15px;
+      color:#3375c8;
+      font-weight:700;
+      margin-bottom:9px;
+      align-self:flex-start;
+      margin-left:6px;
+    }
+    .graph-actions {
+      float:right;
+      margin-right:6px;
+      font-size:18px;
+      color:#3375c8;
+    }
+    .bar-chart-canvas { margin:9px 0 0 0; display:block;}
+    /* Footer buttons container */
+    .footer-buttons {
+      width:92%;
+      margin: 15px auto 0 auto;
+      display:flex;
+      justify-content:space-around;
+      gap: 10px;
+    }
+    .footer-btn {
+      flex: 1;
+      background:#3375c8;
+      color:#fff;
+      font-weight:600;
+      font-size:16px;
+      padding: 12px 0;
+      border-radius: 17px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.25s ease;
+      white-space: nowrap;
+    }
+    .footer-btn:hover {
+      background:#275a9b;
+    }
+    /* Remove unwanted shadows/footers */
+    .bottom-bar {display:none;}
+    /* Responsive (optional) */
+    @media (max-width:480px) {
+      .container { height:100vh; border-radius:0; }
+      .header-bg { height:220px;}
+      .white-card{min-height:220px;}
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="header-bg"></div>
+    <div class="analysis-header">
+      <span class="back-btn" onclick="window.history.back()">&larr;</span>
+      <span class="header-title">Analysis</span>
+      <span style="width:30px;"></span>
+    </div>
+    <div class="data-card">
+      <div class="top-row">
+        <div class="stat-col">
+          <span class="stat-label">Total Balance</span>
+          <span class="stat-value" id="stat-balance">$7,783.00</span>
+        </div>
+        <div class="divider"></div>
+        <div class="stat-col">
+          <span class="stat-label">Total Expense</span>
+          <span class="stat-value expense" id="stat-expense">-$1,187.40</span>
+        </div>
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bg">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div class="progress-label-row">
+          <span class="progress-percent" id="prog-percent">30%</span>
+          <span class="progress-budget" id="prog-budget">$20,000.00</span>
+        </div>
+        <div class="progress-note" id="progress-note">30% Of Your Expenses, Looks Good.</div>
+      </div>
+    </div>
+    <div class="white-card">
+      <div class="tab-btn-row">
+        <button class="tab-btn selected" id="tab-daily">Daily</button>
+        <button class="tab-btn" id="tab-weekly">Weekly</button>
+        <button class="tab-btn" id="tab-monthly">Monthly</button>
+        <button class="tab-btn" id="tab-yearly">Year</button>
+      </div>
+      
+      <canvas id="barChart" class="bar-chart-canvas" width="320" height="160"></canvas>
+      <div style="width:100%;display:flex;justify-content:space-around;margin-top:16px;">
+        <div style="text-align:center;">
+          <div style="color:#3375c8;font-weight:bold;font-size:16px;" id="income-label">$4,120.00</div>
+          <div style="font-size:12px;color:#3375c8;font-weight:500;margin-top:2px;">Income</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="color:#1966b2;font-weight:bold;font-size:16px;" id="expense-label">$1,187.40</div>
+          <div style="font-size:12px;color:#3375c8;font-weight:500;margin-top:2px;">Expense</div>
+        </div>
+      </div>
+    </div>
+    <!-- Footer buttons -->
+    <div class="footer-buttons">
+      <button id="btn-timely" class="footer-btn">Timely Analysis</button>
+      <button id="btn-categorical" class="footer-btn">Categorical Analysis</button>
+    </div>
+  </div>
+  <script>
+    // Chart data for all options
+    const DATA = {
+      daily: {
+        labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        income: [410, 620, 550, 780, 1320, 400, 640],
+        expense: [200, 120, 330, 300, 50, 162, 25],
+        totalIncome: 4120,
+        totalExpense: 1187.40,
+      },
+      weekly: {
+        labels: ["1st Week", "2nd Week", "3rd Week", "4th Week"],
+        income: [3120, 2210, 3845, 2245],
+        expense: [4120, 5000, 6350, 5530],
+        totalIncome: 11420,
+        totalExpense: 20000.20
+      },
+      monthly: {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+        income: [15200, 10320, 11230, 9560, 14310, 11420],
+        expense: [3320, 8210, 6420, 3884, 3520, 3210],
+        totalIncome: 11420,
+        totalExpense: 20000.20
+      },
+      yearly: {
+        labels: ["2021", "2022", "2023", "2024", "2025"],
+        income: [25420, 31200, 28800, 30200, 34210],
+        expense: [19120, 27410, 24520, 24300, 23120],
+        totalIncome: 11420,
+        totalExpense: 20000.20
+      }
+    };
+
+
+    // Current Tab
+    let currentTab = "daily";
+    // ChartJS instance
+    let myChart;
+
+
+    // Update card with data and chart
+    function updatePage(tab) {
+      document.getElementById('income-label').textContent =
+          "$" + DATA[tab].totalIncome.toLocaleString(undefined, {minimumFractionDigits:2});
+      document.getElementById('expense-label').textContent =
+          "$" + DATA[tab].totalExpense.toLocaleString(undefined, {minimumFractionDigits:2});
+      document.getElementById('stat-balance').textContent = "$7,783.00";
+      document.getElementById('stat-expense').textContent = "-$1,187.40";
+      // Progress
+      let percent = 30; // Static but can be calculated as needed
+      document.getElementById('prog-percent').textContent = percent + "%";
+      document.getElementById('prog-budget').textContent = "$20,000.00";
+      document.getElementById('progress-bar').style.width = percent + "%";
+      document.getElementById('progress-note').textContent = percent + "% Of Your Expenses, Looks Good.";
+
+
+      // Chart
+      updateChart(tab);
+    }
+
+
+    function updateChart(tab) {
+      const ctx = document.getElementById('barChart').getContext('2d');
+      if (myChart) myChart.destroy();
+      myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: DATA[tab].labels,
+          datasets: [
+            {
+              label: 'Income',
+              data: DATA[tab].income,
+              backgroundColor: '#3375c8',
+              borderRadius:7,
+              barThickness:24,
+            },
+            {
+              label: 'Expense',
+              data: DATA[tab].expense,
+              backgroundColor: '#ffd5dc',
+              borderRadius:7,
+              barThickness:24,
+            }
+          ]
+        },
+        options: {
+          responsive:false,
+          plugins: {
+            legend: { display: true, labels: {boxWidth:14, font:{size:13}} },
+            tooltip: { enabled:true }
+          },
+          scales: {
+            x: {
+              ticks: { color:'#3375c8', font:{size:14, weight:700} },
+              grid:{display:false}
+            },
+            y: {
+              ticks: { color:'#b3b3b3', font:{size:13}, stepSize:5 },
+              beginAtZero:true,
+              grid:{color:"#eef4fb"},
+              min:0
+            }
+          }
+        }
+      });
+    }
+
+
+    // Tab event handlers
+    document.addEventListener("DOMContentLoaded",()=>{
+      // Tab buttons
+      document.getElementById('tab-daily').onclick = () => {
+        setTab('daily');
+      }
+      document.getElementById('tab-weekly').onclick = () => {
+        setTab('weekly');
+      }
+      document.getElementById('tab-monthly').onclick = () => {
+        setTab('monthly');
+      }
+      document.getElementById('tab-yearly').onclick = () => {
+        setTab('yearly');
+      }
+      setTab("daily");
+
+      // Footer buttons events for future routing
+      document.getElementById('btn-timely').onclick = () => {
+        // Update this URL to your future HTML page
+        window.location.href = "a1.html";
+      };
+      document.getElementById('btn-categorical').onclick = () => {
+        // Update this URL to your future HTML page
+        window.location.href = "a2.html";
+      };
+    });
+
+
+    function setTab(tab) {
+      currentTab = tab;
+      let ids = ['tab-daily','tab-weekly','tab-monthly','tab-yearly'];
+      ids.forEach((id,i)=>{
+        document.getElementById(id).classList.toggle('selected', ids[i]==("tab-"+tab));
+      });
+      updatePage(tab);
+    }
+  </script>
+</body>
+</html>

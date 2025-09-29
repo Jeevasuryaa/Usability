@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign Up</title>
+  <style>
+    /* Reset and base */
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #deddda;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: #f9f7f0;
+      width: 320px;
+      padding: 40px 30px 30px 30px;
+      border-radius: 6px;
+      box-sizing: border-box;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .container > h1 {
+      font-weight: 900;
+      font-size: 28px;
+      color: black;
+      margin: 0 0 30px 0;
+    }
+
+    /* Input Groups */
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px 14px 12px 40px;
+      border-radius: 8px;
+      border: 1px solid #78897b;
+      font-size: 14px;
+      color: #4b4b4b;
+      background-color: #fbfaf5;
+      box-sizing: border-box;
+      outline: none;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+
+    input::placeholder {
+      color: #8b8b8b;
+      font-weight: 500;
+    }
+
+    /* Icons: Using unicode emojis placed absolutely */
+    .input-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #78897b;
+      font-size: 18px;
+      pointer-events: none;
+    }
+
+    /* Password icon: lock padlock style, name icon: person, email icon: envelope */
+    .icon-name::before {
+      content: "👤";
+    }
+
+    .icon-email::before {
+      content: "✉️";
+    }
+
+    .icon-password::before {
+      content: "🔒";
+    }
+
+    /* Button */
+    .btn-signup {
+      background-color: #2f55a0;
+      border: none;
+      border-radius: 8px;
+      padding: 14px 0;
+      width: 100%;
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .btn-signup:hover {
+      background-color: #264891;
+    }
+
+    /* Divider with lines and text */
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 30px 0 16px 0;
+      color: #8a8a8a;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.03em;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      border-top: 1px solid #8a8a8a;
+    }
+
+    .divider:not(:empty)::before {
+      margin-right: 10px;
+    }
+
+    .divider:not(:empty)::after {
+      margin-left: 10px;
+    }
+
+    /* Social Icons */
+    .social-container {
+      text-align: center;
+      margin-bottom: 16px;
+      font-weight: 600;
+      font-size: 14px;
+      color: #8a8a8a;
+      letter-spacing: 0.03em;
+    }
+
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-top: 12px;
+    }
+
+    .social-icon {
+      background-color: black;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .social-icon img {
+      height: 20px;
+      width: 20px;
+    }
+
+    /* Special coloring for Google and Facebook */
+    .social-icon.google {
+      background-color: white;
+    }
+
+    .social-icon.facebook {
+      background-color: #1877f2;
+    }
+
+    /* Sign In text */
+    .signin-text {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 500;
+      color: #7a7a7a;
+    }
+
+    .signin-text a {
+      font-weight: 700;
+      color: #2f55a0;
+      cursor: pointer;
+      text-decoration: none;
+      margin-left: 6px;
+    }
+
+    .signin-text a:hover {
+      text-decoration: underline;
+    }
+
+    /* Error message */
+    .error-message {
+      color: #bb1b1b;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      min-height: 18px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" role="main" aria-labelledby="signupTitle">
+    <h1 id="signupTitle">Sign Up</h1>
+
+    <form id="signupForm" onsubmit="return false;" novalidate>
+      <div class="input-group">
+        <span class="input-icon icon-name" aria-hidden="true"></span>
+        <input type="text" id="name" name="name" placeholder="Name" aria-label="Name" />
+      </div>
+      <div class="input-group">
+        <span class="input-icon icon-email" aria-hidden="true"></span>
+        <input type="email" id="email" name="email" placeholder="Email" aria-label="Email" />
+      </div>
+      <div class="input-group">
+        <span class="input-icon icon-password" aria-hidden="true"></span>
+        <input type="password" id="password" name="password" placeholder="Password" aria-label="Password" />
+      </div>
+      <div class="input-group">
+        <span class="input-icon icon-password" aria-hidden="true"></span>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" aria-label="Confirm Password" />
+      </div>
+
+      <div class="error-message" id="errorMessage"></div>
+
+      <button class="btn-signup" type="button" onclick="submitForm()">SIGN UP</button>
+    </form>
+
+    <div class="divider" aria-hidden="true">OR</div>
+
+    <div class="social-container">Sign Up With</div>
+    <div class="social-icons" role="group" aria-label="Social Sign Up Options">
+      <div class="social-icon google" title="Google" tabindex="0" aria-label="Sign up with Google">
+        <img src="assets/google.png" alt="Spendwise Logo"/>
+      </div>
+      <div class="social-icon facebook" title="Facebook" tabindex="0" aria-label="Sign up with Facebook">
+        <img src="assets/face.png" alt="Spendwise Logo"/>
+      </div>
+      <div class="social-icon" title="X" tabindex="0" aria-label="Sign up with X">
+        <img src="assets/x.png" alt="Spendwise Logo"/>
+      </div>
+    </div>
+
+    <div class="signin-text">
+      Already have an account? <a href="#" onclick="signIn(event)">Sign In.</a>
+    </div>
+  </div>
+
+  <script>
+    function submitForm() {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const confirmPassword = document.getElementById('confirmPassword').value.trim();
+      const errorMessage = document.getElementById('errorMessage');
+      errorMessage.textContent = '';
+
+      if (!name || !email || !password || !confirmPassword) {
+        errorMessage.textContent = 'Please fill all the blocks.';
+        return false;
+      }
+
+      if (password !== confirmPassword) {
+        errorMessage.textContent = 'Passwords do not match.';
+        return false;
+      }
+
+      // If the form is valid
+      errorMessage.textContent = '';
+      window.location.href = "signin.html";
+      return true;
+    }
+
+    function signIn(event) {
+      event.preventDefault();
+      window.location.href = "signin.html";
+    }
+  </script>
+</body>
+</html>

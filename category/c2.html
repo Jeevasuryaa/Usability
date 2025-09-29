@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=390, initial-scale=1"/>
+  <title>Food Expenses</title>
+  <style>
+    html,body { margin:0; padding:0; height:100%; width:100vw; background:#e8ebf0;}
+    body { min-height:100vh; display:flex; justify-content:center; align-items:center; background:#dae3f0;}
+    .container { width:390px; height:844px; background:#f7f9fa; border-radius:28px; box-shadow:0 2px 16px #3375c84c; overflow:hidden; display:flex; flex-direction:column; position:relative;}
+    .header-bg { background:#3375c8; height:200px; border-bottom-left-radius:42px; border-bottom-right-radius:42px; width:100%; position:absolute; left:0; top:0; z-index:0;}
+    .header { z-index:1; position:relative; text-align:center; }
+    .header-row { display:flex; align-items:center; justify-content:space-between; padding:20px 22px 0 15px;}
+    .back { font-size:25px; color:#fff; font-weight:bold; cursor:pointer;}
+    .header-title { flex:1; color:#fff; font-size:21px; font-weight:bold; text-align:center;}
+    .edit-btn { margin-left:8px; background:#2765ad; color:#fff; border:none; border-radius:9px; padding:5px 12px; font-weight:bold; cursor:pointer;}
+    .budget-section { margin-top:9px; padding: 0 22px;}
+    .budget-row { display:flex; justify-content:space-between; font-size:17px; font-weight:500; align-items:end; margin-bottom:10px;}
+    .budget-label { color:#dae7fa; font-size:13px; font-weight:bold; display:block;}
+    .budget-value { color:#fff; font-size:22px; font-weight:bold;}
+    .budget-value.expense { color:#ffd5dc;}
+    .progress-area {width:82%;margin:7px auto 0 auto;}
+    .progress-bg { width:100%; height:11px; background:#ddefff; border-radius:7px; overflow:hidden;}
+    .progress-bar { background:#fff; height:100%; width:39%; border-radius:7px 0 0 7px; transition:width .4s;}
+    .progress-labels { display:flex; justify-content:space-between; width:100%; margin:8px auto 0 auto; font-size:14px; font-weight:bold;}
+    .progress-percent { color:#ffb500;}
+    .progress-budget { color:#222;}
+    .progress-note { margin-top:7px; color:#eaefff; font-size:13px; text-align:left; width:100%; font-weight:500;}
+    .main-list { flex:1; width:100%; margin-top:30px;}
+    .list-section { width:99%; margin:0 auto 10px auto; background:none;}
+    .month-title { font-size:16.5px; color:#2765ad; font-weight:bold; margin:19px 0 8px 7px;}
+    .expense-card { display:flex; align-items:center; background:#e8f2fe; border-radius:19px; box-shadow:0 2px 10px #3375c813; padding:12px 12px; margin-bottom:10px; cursor:default;}
+    .expense-icon-block { width:43px; height:43px; background:#3375c8; border-radius:13px; display:flex; align-items:center; justify-content:center;}
+    .expense-icon-block span { font-size:23px; color:#fff;}
+    .expense-details { margin-left:15px; flex:1; display:flex; flex-direction:column;}
+    .expense-title { font-size:15.3px; font-weight:bold; color:#2565ae; margin-bottom:2px;}
+    .expense-date { font-size:13px; font-weight: 500; color:#3375c8;}
+    .expense-amt { font-size:16px; font-weight:bold; color:#1966b2; margin-left:15px;}
+    .expense-amt.negative { color:#e84e59;}
+    .add-expense-btn { width:72%; margin:25px auto; background:#3375c8; color:#fff; font-weight:bold; font-size:18px; border:none; border-radius:17px; padding:13px 0; cursor:pointer; letter-spacing:.02em; box-shadow:0 1px 12px #3375c83a;}
+    .add-expense-btn:active { background:#245b98;}
+    .calendar-btn { font-size:23px; background:none; border:none; color:#2765ad; float:right; margin-right:13px; cursor:pointer;}
+    .bottom-bar { display:none;}
+    /* Modal styling */
+    #edit-modal {display:none; position:fixed; left:0; top:0; width:100vw; height:100vh; background:#000a; z-index:99; justify-content:center; align-items:center;}
+    #edit-modal .modal-content {background:#fff; border-radius:18px; padding:30px 20px; box-shadow:0 2px 16px #3375c84c; width:300px;}
+    #edit-modal input { width:90%; margin:8px 0; padding:7px; border-radius:7px; border:1px solid #b2c3e0;}
+    #edit-modal h3 { margin-top:0; color:#3375c8;}
+    #edit-modal button { margin-top:8px; }
+    @media (max-width:480px){ .container{ height:100vh; border-radius:0;}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header-bg"></div>
+    <div class="header">
+      <div class="header-row">
+        <span class="back" onclick="window.history.back()">&larr;</span>
+        <span class="header-title" id="category-title">Food</span>
+        <button id="edit-category-btn" class="edit-btn">Edit</button>
+      </div>
+      <div class="budget-section">
+        <div class="budget-row">
+          <div>
+            <span class="budget-label">Total Balance</span>
+            <span class="budget-value" id="total-balance">$7783.00</span>
+          </div>
+          <div>
+            <span class="budget-label">Total Expense</span>
+            <span class="budget-value expense" id="total-expense">-$71.08</span>
+          </div>
+        </div>
+        <div class="progress-area">
+          <div class="progress-bg">
+            <div class="progress-bar" id="food-progressbar"></div>
+          </div>
+          <div class="progress-labels">
+            <span class="progress-percent" id="food-progress-label">14%</span>
+            <span class="progress-budget" id="food-budget-label">$500.00</span>
+          </div>
+          <div class="progress-note" id="progress-note">30% Of Your Expenses. Looks Good.</div>
+        </div>
+      </div>
+    </div>
+    <div class="main-list" id="main-list">
+      <!-- Expense list rendered by JS -->
+    </div>
+  </div>
+  <!-- Edit Category Modal -->
+  <div id="edit-modal">
+    <div class="modal-content">
+      <h3>Edit Category</h3>
+      <label>
+        Category Name:<br/>
+        <input type="text" id="edit-cat-name"/>
+      </label>
+      <br/><br/>
+      <label>
+        Budget Limit:<br/>
+        <input type="number" id="edit-cat-budget"/>
+      </label>
+      <br/><br/>
+      <button id="save-cat-btn" style="background:#3375c8;color:#fff;border:none; border-radius:7px;padding:8px 15px;font-weight:bold;cursor:pointer;">Save</button>
+      <button id="cancel-cat-btn" style="background:#eee;color:#3375c8;border:none;border-radius:7px; padding:8px 15px;margin-left:6px; font-weight:bold;cursor:pointer;">Cancel</button>
+    </div>
+  </div>
+  <script>
+    // Sample expense data for demonstration
+    let categoryName = "Food";
+    let foodBudget = 500;
+    let totalBalance = 500.00;
+    let expenses = [
+      { title:"Dinner", amt:26.00, date:"2024-04-30", time:"18:27", month:"April" },
+      { title:"Delivery Pizza", amt:18.35, date:"2024-04-24", time:"15:00", month:"April" },
+      { title:"Lunch", amt:11.40, date:"2024-04-15", time:"12:30", month:"April" },
+      { title:"Brunch", amt:12.13, date:"2024-04-08", time:"09:30", month:"April" },
+      { title:"Dinner", amt:27.20, date:"2024-03-31", time:"20:50", month:"March" }
+    ];
+    // Group expenses by month
+    function groupByMonth(expenseList) {
+      let out = {};
+      expenseList.forEach(e=>{
+        if(!out[e.month]) out[e.month]=[];
+        out[e.month].push(e);
+      });
+      return out;
+    }
+    function updateHeader() {
+      document.getElementById('total-balance').textContent = "$" + totalBalance.toLocaleString(undefined,{minimumFractionDigits:2});
+      // Food expenses only
+      let foodExpense = expenses.reduce((sum,e)=>sum+e.amt,0);
+      document.getElementById('total-expense').textContent = "-$" + foodExpense.toLocaleString(undefined,{minimumFractionDigits:2});
+      let percent = Math.round((foodExpense/totalBalance)*100);
+      percent = isNaN(percent) ? 0 : percent;
+      document.getElementById('food-progress-label').textContent = percent + "%";
+      document.getElementById('food-budget-label').textContent = "$" + totalBalance.toLocaleString(undefined,{minimumFractionDigits:2});
+      document.getElementById('food-progressbar').style.width = Math.max(7,percent) + "%";
+      document.getElementById('progress-note').textContent = percent + "% Of Your Expenses. Looks Good.";
+      // Update category name in header
+      document.getElementById('category-title').textContent = categoryName;
+    }
+    function renderExpenseList() {
+      let main = document.getElementById('main-list');
+      main.innerHTML = "";
+      let grouped = groupByMonth(expenses);
+      let months = Object.keys(grouped).sort((a,b)=>b.localeCompare(a)); // Descending (Apr before Mar)
+      months.forEach(month=>{
+        main.innerHTML += `<div class="list-section"><div class="month-title">${month} <button class="calendar-btn">&#128197;</button></div>`;
+        grouped[month].forEach(e=>{
+          main.innerHTML += `
+          <div class="expense-card">
+            <div class="expense-icon-block"><span>🍴</span></div>
+            <div class="expense-details">
+              <div class="expense-title">${e.title}</div>
+              <div class="expense-date">${e.time} - ${month === "April" ? "April" : month} ${e.date.split("-")[2]}</div>
+            </div>
+            <div class="expense-amt negative">-$${e.amt.toFixed(2)}</div>
+          </div>`;
+        });
+        main.innerHTML += `</div>`;
+      });
+    }
+
+    // Modal logic: show/hide and update
+    document.addEventListener('DOMContentLoaded', ()=>{
+      // Edit button
+      document.getElementById('edit-category-btn').onclick = function(){
+        document.getElementById('edit-modal').style.display = 'flex';
+        document.getElementById('edit-cat-name').value = categoryName;
+        document.getElementById('edit-cat-budget').value = totalBalance;
+      };
+      // Save category
+      document.getElementById('save-cat-btn').onclick = function(){
+        let newName = document.getElementById('edit-cat-name').value.trim();
+        let newBudget = parseFloat(document.getElementById('edit-cat-budget').value);
+        if(newName) categoryName = newName;
+        if(!isNaN(newBudget) && newBudget>0) totalBalance = newBudget;
+        updateHeader();
+        document.getElementById('edit-modal').style.display = 'none';
+      };
+      // Cancel editing
+      document.getElementById('cancel-cat-btn').onclick = function(){
+        document.getElementById('edit-modal').style.display = 'none';
+      };
+      updateHeader();
+      renderExpenseList();
+    });
+
+    // Initial rendering if DOMContentLoaded is already fired
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      updateHeader();
+      renderExpenseList();
+    }
+  </script>
+</body>
+</html>

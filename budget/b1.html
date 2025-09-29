@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=402, initial-scale=1"/>
+  <title>Budget Management</title>
+  <style>
+    body {
+      margin: 0; padding: 0;
+      background: #eaeaea;
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      width: 100vw;
+      display: flex; justify-content: center; align-items: center;
+    }
+    .app-container {
+      width: 402px;
+      height: 874px;
+      background: #f8f9fa;
+      box-sizing: border-box;
+      border-radius: 10px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.09);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .app-header {
+      display: flex;
+      align-items: center;
+      height: 70px;
+      padding: 0 18px;
+      background: #f8f9fa;
+      box-sizing: border-box;
+      font-size: 16px;
+      color: #c9cbce;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+    .app-header-title {
+      margin-left: 5px;
+      font-size: 23px;
+      color: #222829;
+      font-weight: bold;
+      flex: 1;
+      letter-spacing: 0.02em;
+      text-align: center;
+    }
+    .arrow-btn {
+      background: none;
+      border: none;
+      color: #222829;
+      font-size: 22px;
+      cursor: pointer;
+      padding: 0 9px 0 0;
+      margin-right: 3px;
+    }
+    .budget-list-content {
+      flex: 1;
+      padding: 0px 0 0 0;
+      background: #f8f9fa;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      min-height: 0;
+    }
+    .section-label {
+      font-size: 14px;
+      color: #b2b2ba;
+      font-weight: 600;
+      margin-left: 32px;
+      margin-top: 10px;
+      margin-bottom: 2px;
+      letter-spacing: 0.012em;
+    }
+    .budget-group {
+      background: #f3f6fc;
+      margin: 0 18px 20px 18px;
+      padding: 8px 0;
+      border-radius: 18px;
+      box-shadow: 0 1px 1.5px rgba(0,0,0,0.03);
+    }
+    .budget-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      padding: 13px 18px 10px 18px;
+      margin: 9px 14px;
+      margin-bottom: 14px;
+      cursor: pointer;
+      position: relative;
+    }
+    .budget-row {
+      display: flex; align-items: center;
+      margin-bottom: 8px;
+    }
+    .budget-icon {
+      width: 36px; height: 36px;
+      background: #f0f1fa;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 13px;
+      font-size: 23px;
+      color: #2864d4;
+    }
+    .budget-cat {
+      font-size: 17px;
+      font-weight: bold;
+      color: #2d2e46;
+      flex: 1;
+      margin-right: 6px;
+    }
+    .budget-percent {
+      font-weight: bold; font-size: 14px; color: #8c8c96;
+      margin-right: 0px;
+    }
+    .budget-bar-bg {
+      width: 100%; height: 3.7px;
+      background: #e6e8f0; border-radius: 8px;
+      margin-bottom: 7px;
+    }
+    .budget-bar {
+      height: 100%; border-radius: 8px;
+      background: #2864d4;
+      width: 0;
+      transition: width 0.8s;
+    }
+    .budget-stats-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 15px;
+      margin-top: 5px;
+    }
+    .stats-spent {
+      color: #e25b64; font-weight: bold;
+    }
+    .stats-slash {
+      color: #7b7b85; font-weight: bold;
+    }
+    .stats-total {
+      color: #7b7b85; font-weight: bold;
+    }
+    .stats-remain {
+      color: #e25b64; font-size: 14px; font-weight: bold;
+    }
+    .stats-date {
+      color: #b1b1be; font-size: 13px; font-weight: 600;
+    }
+    .add-btn-row {
+      margin: 17px 18px 20px 18px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .add-btn {
+      width: 100%; padding: 15px 0;
+      font-size: 18px; font-weight: bold;
+      color: #fff; background: #2864d4;
+      border: none; border-radius: 13px;
+      text-align: center; cursor: pointer;
+      letter-spacing: 0.03em;
+    }
+    .details-content {
+      flex: 1;
+      background: #f8f9fa;
+      overflow-y: auto;
+      display: flex; flex-direction: column;
+      align-items: stretch;
+    }
+    .details-head {
+      background: #f2f8fe;
+      margin: 0 18px 0 18px;
+      border-radius: 15px;
+      padding: 13px 18px 10px 18px;
+      margin-top: 24px;
+      margin-bottom: 16px;
+    }
+    .details-title {
+      font-size: 19px;
+      color: #222;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+    .details-date-row {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .details-date {
+      color: #8a95a1; font-size: 14px; font-weight: 520;
+      background: #f2f8fe; border-radius: 9px; padding: 7px 18px;
+      letter-spacing: 0.01em;
+    }
+    .details-budget-row {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px;
+    }
+    .details-label {
+      font-size: 16px;
+      color: #b3cbb4;
+      font-weight: 700;
+    }
+    .details-value-green {
+      font-size: 17px;
+      color: #2cbc7a;
+      font-weight: bold;
+    }
+    .details-value-red {
+      font-size: 17px;
+      color: #ff7076;
+      font-weight: bold;
+    }
+    .expense-list {
+      margin: 0 18px 0 18px;
+      display: flex; flex-direction: column;
+    }
+    .expense-row {
+      background: #fff;
+      border-radius: 13px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+      display: flex; align-items: center;
+      margin-bottom: 15px;
+      padding: 13px 18px 10px 15px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .expense-icon {
+      width: 32px; height: 32px;
+      border-radius: 8px; margin-right: 13px;
+      display: flex; align-items: center; justify-content: center;
+      background: #f2f3f7; font-size: 20px; color: #e25b64;
+    }
+    .expense-name {
+      color: #222; font-weight: bold; margin-right: 7px;
+    }
+    .expense-wallet {
+      color: #8c8c96; font-size: 13px; font-weight: 400; margin-right: 11px;
+    }
+    .expense-date {
+      color: #d1d1dd; font-size: 12px; font-weight: 300; margin-right: 11px;
+    }
+    .expense-value {
+      color: #e25b64; font-weight: bold; font-size: 16px;
+      margin-left: auto;
+    }
+    .details-btn-row {
+      display: flex; flex-direction: row; justify-content: center;
+      align-items: center; gap: 17px; margin: 23px 0 0 0;
+    }
+    .details-btn {
+      flex: 1;
+      background: #fff;
+      color: #2864d4;
+      border: 2px solid #e4e4e9;
+      border-radius: 11px;
+      font-size: 19px;
+      font-weight: bold;
+      padding: 15px 0;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.14s;
+    }
+    .details-btn.delete {
+      color: #e25b64;
+      border: 2px solid #e25b64;
+      background: #fff;
+    }
+    .details-btn.delete:active { background: #ffedee; }
+    .details-btn.edit:active { background: #e6e7fd; }
+    .modal-bg {
+      position: fixed; left: 0; top: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.16);
+      z-index: 29;
+      display: none; align-items: center; justify-content: center;
+    }
+    .modal-bg.visible { display: flex; }
+    .edit-modal {
+      width: 360px;
+      background: #fff;
+      border-radius: 21px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.08);
+      padding: 37px 33px;
+      display: flex; flex-direction: column; align-items: stretch;
+    }
+    .edit-title-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 32px;
+      font-size: 19px; font-weight: bold;
+    }
+    .edit-title { color: #222; font-weight: bold; }
+    .edit-cancel {
+      color: #8a95a1;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      background: none; border: none; padding: 0; margin-left: 15px;
+    }
+    .edit-row {
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 16.5px; font-weight: 600;
+      margin-bottom: 23px;
+    }
+    .edit-label { color: #9b9c9e;
+    margin-right: 100px;
+ }
+    .edit-value, .edit-select {
+      color: #222;
+      font-weight: bold;
+    }
+    .edit-right-arrow {
+      font-size: 16px; color: #aaa;
+      margin-left: 7px;
+    }
+    .edit-btn-row {
+      display: flex; flex-direction: row; justify-content: center;
+      align-items: center; gap: 16px; margin-top: 18px;
+    }
+    .edit-btn {
+      flex: 1;
+      background: #fff;
+      color: #2864d4;
+      border: 2px solid #e4e4e9;
+      border-radius: 11px;
+      font-size: 19px;
+      font-weight: bold;
+      padding: 15px 0;
+      cursor: pointer;
+      transition: background 0.14s;
+    }
+    .edit-btn.delete {
+      color: #e25b64;
+      border: 2px solid #e25b64;
+      background: #fff;
+    }
+    .edit-btn.edit:active { background: #e6e7fd; }
+    .edit-btn.delete:active { background: #ffdede; }
+    select.edit-select {
+      background: transparent;
+      border: none;
+      font-size: 16.5px;
+      font-weight: 700;
+      cursor: pointer;
+      appearance: none;
+      padding-right: 14px;
+    }
+  </style>
+</head>
+<body>
+<div class="app-container">
+  <!-- List screen -->
+  <div id="budgetListScreen" style="display:flex; flex-direction:column; height:100%;">
+    <div class="app-header">
+      <span class="app-header-title">Budgets</span>
+    </div>
+    <div class="budget-list-content">
+      <div class="section-label">Daily budget</div>
+      <div class="budget-group" id="dailyBudgets">
+        <!-- Daily budget cards go here -->
+      </div>
+      <div class="section-label" style="margin-top:18px;">Monthly Budget</div>
+      <div class="budget-group" id="monthlyBudgets">
+        <!-- Monthly budget cards go here -->
+      </div>
+      <div class="section-label" style="margin-top:14px;">Other</div>
+      <div class="budget-group" id="otherBudgets">
+        <!-- Other budget cards go here -->
+      </div>
+    </div>
+    <div class="add-btn-row">
+      <button class="add-btn" onclick="showAddModal()">Add new budget</button>
+    </div>
+  </div>
+  <!-- Details screen -->
+  <div id="budgetDetailScreen" style="display:none; flex-direction:column; height:100%;">
+    <div class="app-header">
+      <button class="arrow-btn" onclick="backToList()">&larr;</button>
+      <span class="app-header-title" id="detailCatTitle"></span>
+    </div>
+    <div class="details-content">
+      <div class="details-head">
+        <div class="details-title" id="detailsHeadTitle"></div>
+        <div class="details-date-row">
+          <div class="details-date" id="detailsDate"></div>
+        </div>
+        <div class="details-budget-row">
+          <div>
+            <span class="details-label">Budget Amount</span><br>
+            <span class="details-value-green" id="detailsAmount"></span>
+          </div>
+          <div>
+            <span class="details-label">Total</span><br>
+            <span class="details-value-red" id="detailsSpent"></span>
+          </div>
+        </div>
+      </div>
+      <div class="expense-list" id="expenseList">
+        <!-- Expenses inserted by JS -->
+      </div>
+      <div class="details-btn-row">
+        <button class="details-btn delete" onclick="deleteBudget(curBudgetId)">Delete</button>
+        <button class="details-btn edit" onclick="showEditModal(curBudgetId)">Edit</button>
+      </div>
+    </div>
+  </div>
+  <!-- Edit/Add Modal -->
+  <div class="modal-bg" id="editModalBg">
+    <div class="edit-modal">
+      <div class="edit-title-row">
+        <span class="edit-title" id="modalTitle">Budget Details</span>
+        <button class="edit-cancel" onclick="hideEditModal()">Cancel</button>
+      </div>
+      <div class="edit-row">
+        <label for="editCategorySelect" class="edit-label">Category</label>
+<select class="edit-select" id="editCategorySelect" style="flex:1;">
+  <option>Daily budget</option>
+  <option>Monthly Budget</option>
+  <option>Other</option>
+</select>
+
+      </div>
+      <div class="edit-row">
+        <label for="editNameInput" class="edit-label">Name</label>
+        <input id="editNameInput" type="text" class="edit-select"/>
+      </div>
+      <div class="edit-row">
+        <label for="editLimitInput" class="edit-label">Limit</label>
+        <input id="editLimitInput" type="number" min="0" class="edit-select"/>
+      </div>
+      <div class="edit-btn-row">
+        <button class="edit-btn delete" onclick="deleteBudget(curBudgetId)">Delete</button>
+        <button class="edit-btn edit" id="saveBtn">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  let budgets = [
+    { id:1, type:'daily', cat:'Food & Drink', icon:'🍴', percent:85, spent:60, total:70, remain:10, date:'27/03/2024',
+      expenses: [{icon:'🥤', name:'Beverage', wallet:'Wallet', val:5, date:'27/03/2024'},
+                 {icon:'🍔', name:'Food', wallet:'BIDV', val:20, date:'27/03/2024'},
+                 {icon:'🍔', name:'Food', wallet:'BIDV', val:35, date:'27/03/2024'}] },
+    { id:2, type:'monthly', cat:'Monthly Budget', icon:'📊', percent:97, spent:6800, total:7000, remain:200, date:'01/03/2024',
+      expenses: [] },
+    { id:3, type:'monthly', cat:'Shopping', icon:'🛒', percent:124, spent:620, total:500, remain:120, date:'01/03/2024',
+      expenses: [] }
+  ];
+
+  function renderBudgets() {
+    document.getElementById("dailyBudgets").innerHTML = "";
+    document.getElementById("monthlyBudgets").innerHTML = "";
+    document.getElementById("otherBudgets").innerHTML = "";
+    budgets.forEach(b => {
+      const html = `<div class="budget-card" onclick="showBudgetDetail(${b.id})">
+        <div class="budget-row">
+          <div class="budget-icon">${b.icon}</div>
+          <div class="budget-cat">${b.cat}</div>
+          <div class="budget-percent">${b.percent}%</div>
+        </div>
+        <div class="budget-bar-bg"><div class="budget-bar" style="width:${Math.min(b.percent,100)}%;"></div></div>
+        <div class="budget-stats-row">
+          <span><span class="stats-spent">$${b.spent.toLocaleString()}</span><span class="stats-slash"> / </span><span class="stats-total">$${b.total.toLocaleString()}</span></span>
+          <span class="stats-remain">Remain: $${b.remain.toLocaleString()}</span>
+        </div>
+        <div class="budget-stats-row">
+          <span class="stats-date">${b.date}</span>
+        </div>
+      </div>`;
+      if (b.type === 'daily') document.getElementById("dailyBudgets").innerHTML += html;
+      else if (b.type === 'monthly') document.getElementById("monthlyBudgets").innerHTML += html;
+      else document.getElementById("otherBudgets").innerHTML += html;
+    });
+  }
+
+  let curBudgetId = null;
+
+  function showBudgetDetail(id) {
+    curBudgetId = id;
+    const b = budgets.find(x => x.id===id);
+    document.getElementById("budgetListScreen").style.display = "none";
+    document.getElementById("budgetDetailScreen").style.display = "flex";
+    document.getElementById("detailCatTitle").textContent = b.cat;
+    document.getElementById("detailsHeadTitle").textContent = b.cat;
+    document.getElementById("detailsDate").textContent = b.date;
+    document.getElementById("detailsAmount").textContent = "$" + b.total.toLocaleString();
+    document.getElementById("detailsSpent").textContent = "$" + b.spent.toLocaleString();
+
+    let expHtml = "";
+    b.expenses.forEach(e => {
+      expHtml += `<div class="expense-row">
+        <div class="expense-icon">${e.icon}</div>
+        <div class="expense-name">${e.name}</div>
+        <div class="expense-wallet">${e.wallet}</div>
+        <div class="expense-value">$${e.val.toLocaleString()}</div>
+      </div>`;
+    });
+    document.getElementById("expenseList").innerHTML = expHtml;
+  }
+
+  function backToList() {
+    document.getElementById("budgetDetailScreen").style.display = "none";
+    document.getElementById("budgetListScreen").style.display = "flex";
+    renderBudgets();
+  }
+
+  function showEditModal(id) {
+    const b = budgets.find(x => x.id===id);
+    curBudgetId = id;
+    document.getElementById("modalTitle").textContent = "Edit Budget";
+    document.getElementById("editNameInput").value = b.cat;
+    document.getElementById("editCategorySelect").value = b.type === 'daily' ? 'Daily budget' : (b.type === 'monthly' ? 'Monthly Budget' : 'Other');
+    document.getElementById("editLimitInput").value = b.total;
+    document.getElementById("editModalBg").classList.add("visible");
+    // Set save button to edit mode
+    const saveBtn = document.getElementById('saveBtn');
+    saveBtn.onclick = saveEdits;
+  }
+
+  function hideEditModal() {
+    document.getElementById("editModalBg").classList.remove("visible");
+  }
+
+  function deleteBudget(id) {
+    budgets = budgets.filter(x => x.id !== id);
+    hideEditModal();
+    document.getElementById("budgetDetailScreen").style.display = "none";
+    document.getElementById("budgetListScreen").style.display = "flex";
+    renderBudgets();
+  }
+
+  function saveEdits() {
+    const nameVal = document.getElementById("editNameInput").value.trim();
+    const typeVal = document.getElementById("editCategorySelect").value;
+    const limitVal = Number(document.getElementById("editLimitInput").value);
+    if (!nameVal || !limitVal || limitVal <= 0) {
+      alert("Please enter valid name and limit.");
+      return;
+    }
+    const b = budgets.find(x => x.id === curBudgetId);
+    b.cat = nameVal;
+    if (typeVal === "Daily budget") b.type = "daily";
+    else if (typeVal === "Monthly Budget") b.type = "monthly";
+    else b.type = "other";
+    b.total = limitVal;
+    b.remain = b.total - (b.spent || 0);
+    hideEditModal();
+    backToList();
+  }
+
+  function showAddModal() {
+    curBudgetId = null;
+    document.getElementById("modalTitle").textContent = "Add New Budget";
+    document.getElementById("editNameInput").value = "";
+    document.getElementById("editCategorySelect").value = "Daily budget";
+    document.getElementById("editLimitInput").value = "";
+    document.getElementById("editModalBg").classList.add("visible");
+    // Set save button to add mode
+    const saveBtn = document.getElementById('saveBtn');
+    saveBtn.onclick = saveNewBudget;
+  }
+
+  function saveNewBudget() {
+    const nameVal = document.getElementById("editNameInput").value.trim();
+    const typeVal = document.getElementById("editCategorySelect").value;
+    const limitVal = Number(document.getElementById("editLimitInput").value);
+    if (!nameVal || !limitVal || limitVal <= 0) {
+      alert("Please enter valid name and limit.");
+      return;
+    }
+    const newId = budgets.length > 0 ? Math.max(...budgets.map(b => b.id)) + 1 : 1;
+    let icon = "📊";
+    if (typeVal === "Daily budget") icon = "🍴";
+    else if (typeVal === "Monthly Budget") icon = "📊";
+    else icon = "🛒";
+    const newBudget = {
+      id: newId,
+      cat: nameVal,
+      type: (typeVal === "Daily budget") ? "daily" : ((typeVal === "Monthly Budget") ? "monthly" : "other"),
+      icon: icon,
+      percent: 0,
+      spent: 0,
+      total: limitVal,
+      remain: limitVal,
+      date: new Date().toLocaleDateString(),
+      expenses: []
+    };
+    budgets.push(newBudget);
+    hideEditModal();
+    backToList();
+  }
+
+  renderBudgets();
+</script>
+</body>
+</html>

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=390, initial-scale=1"/>
+  <title>Home</title>
+  <style>
+    html, body {
+      margin:0;
+      padding:0;
+      height:100%;
+      width:100vw;
+      background:#dae3f0;
+    }
+    body {
+      min-height:100vh;
+      background:#dae3f0;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+    .container {
+      width:390px;
+      height:844px;
+      background:#f7f9fa;
+      border-radius:28px;
+      box-shadow:0 2px 16px #3375c84c;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      position:relative;
+      justify-content:space-between;
+      padding-bottom:0;
+    }
+    .header-row {
+      position:relative;
+      background:none;
+      padding:23px 14px 2px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      z-index:2;
+    }
+    .icon-btn {background:none;border:none;cursor:pointer;}
+    .profile-icon {
+      width:28px;height:28px;border-radius:50%;
+      background:#3375c8;display:flex;align-items:center;justify-content:center;
+      overflow:hidden;
+    }
+    .bell-icon {
+      width:28px;height:28px;display:flex;align-items:center;justify-content:center;
+    }
+    .date-title {
+      flex:1;text-align:center;color:#3375c8;font-size:15.5px;margin:auto 0;
+      font-weight:600;letter-spacing:.01em;
+    }
+    .main-card {
+      width:93%;margin:0 auto; margin-bottom:6px;
+    }
+    .card-section {
+      width:100%;
+      background:none;
+      margin:0 0 19px 0;
+    }
+    .monthly-card {
+      background:#3375c8;
+      border-radius:15px;
+      padding:21px 18px 15px 18px;
+      margin-bottom:12px;
+      color:#fff;
+      position:relative;
+    }
+    .card-top-row {
+      font-size:16px;font-weight:bold; margin-bottom:18px;
+      text-align:left;
+      color:#dae3f0;
+    }
+    .graph-area {
+      width:100%;display:flex;flex-direction:column;align-items:center;margin-top:-9px;
+    }
+    .monthly-graph-num {
+      font-size:29px;font-weight:700;color:#fff; margin-bottom:5px;margin-top:0;
+      text-align:left;width:100%;
+    }
+    .month-tabs {
+      margin-bottom:0;
+      display:flex;justify-content:space-between;width:98%;
+    }
+    .month-tab {
+      background:transparent; border:none;color:#dae3f0;font-size:13px;
+      font-weight:600;padding:0 8px;cursor:pointer;border-radius:7px;
+      transition:background 0.15s;
+    }
+    .month-tab.selected {background:#fff2; color:#fff;}
+    .graph-bar-row {width:100%;display:flex;align-items:flex-end;margin-bottom:8px;}
+    .graph-bar {
+      background:#fff;
+      border-radius:7px 7px 0 0;
+      width:18px;
+      margin-right:4px;
+      position:relative;
+      transition:height .22s;
+    }
+    .graph-bar.current {background:#4594df;}
+    .graph-label-row {
+      width:99%;display:flex;align-items:center;justify-content:space-between;
+      font-size:10.5px;font-weight:600;color:#dae3f0;margin-bottom:-6px;
+    }
+    .percent-tag {
+      background:#1dc272;
+      color:#fff;
+      font-size:13px;
+      font-weight:700;
+      border-radius:11px;
+      padding:2px 13px;margin-left:11px;
+      vertical-align:middle;
+    }
+    .insights-list {margin-top:6px;}
+    .insight-row {
+      display:flex;align-items:center;
+      background:#3375c8;color:#fff;font-size:14px;
+      border-radius:11px;margin-bottom:9px;
+      padding:10px 17px;font-weight:600;
+      justify-content:space-between;
+    }
+    .insight-row svg {margin-right:7px;}
+    .home-section-title {
+      font-size:12.5px;color:#3375c8;font-weight:700;margin:18px 0 7px 3px;letter-spacing:.01em;
+    }
+    .history-card {background:#fff;border-radius:15px;padding:14px 17px 10px 17px;}
+    .history-list {margin-top:9px;}
+    .history-row {
+      display:flex;align-items:center;
+      border-radius:15px;
+      background:#f2f7fd;
+      margin-bottom:8px;padding:11px 10px;font-weight:600;
+      cursor:pointer;transition:box-shadow 0.18s;
+      position:relative;
+    }
+    .history-row:hover {box-shadow:0 3px 13px #3375c82a;}
+    .history-icon {
+      width:33px;height:33px;background:#f4f8fe;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-right:10px;
+      font-size:19px;
+    }
+    .tran-title {font-size:14.5px;color:#2363a4;font-weight:700;}
+    .tran-sub {font-size:11.5px;color:#3375c8;}
+    .tran-value {font-size:15px;font-weight:700;margin-left:auto;min-width:62px;text-align:right;}
+    .tran-expense {color:#e26588;}
+    .tran-income {color:#0eab53;}
+    .tran-saving {color:#3375c8;}
+    .dropdown-details {
+      position:absolute; left:0; top:100%; width:97%; background:#fffbe8;
+      border-radius:13px;margin:0 0 0 6px; box-shadow:0 2px 9px #3375c814;
+      padding:13px 16px; font-size:13px; color:#3375c8; font-weight:600; z-index:3;
+      display:none; 
+    }
+    .history-row.open .dropdown-details {display:block;}
+    .footer-row {
+      width:100%;background:#3375c8;display:flex;align-items:center;justify-content:space-around;
+      padding:11px 0 11px 0;position:absolute;left:0;bottom:0;z-index:5;
+      border-radius:0 0 28px 28px;
+    }
+    .footer-btn {
+      flex:1;
+      text-align:center;background:none;border:none;cursor:pointer;
+      color:#fff;font-size:15px;font-weight:600;padding:7px 0;
+      transition:color 0.19s;
+      border-radius:10px;
+      margin:0 15px;
+    }
+    .footer-btn.selected {background:#fff2; color:#eee;}
+    .footer-btn:active {background:#275a9b;}
+    @media (max-width:480px) { .container{height:100vh;border-radius:0;} }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header-row">
+      <button class="icon-btn" id="btn-profile">
+        <!-- Profile/user icon SVG -->
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4.5" stroke="#3375c8" stroke-width="2"/><ellipse cx="12" cy="19" rx="6" ry="2.75" stroke="#3375c8" stroke-width="2"/></svg>
+      </button>
+      <span class="date-title">Sun, Sep 10</span>
+      <button class="icon-btn" id="btn-bell">
+        <!-- Bell icon SVG -->
+        <svg width="23" height="23" viewBox="0 0 24 24" fill="none"><path d="M14 20a2 2 0 0 1-4 0" stroke="#3375c8" stroke-width="2"/><path d="M18 13V11a6 6 0 1 0-12 0v2c-.303 2.715-1.833 4-2 4.5a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1c-.167-.5-1.697-1.785-2-4.5Z" stroke="#3375c8" stroke-width="2"/></svg>
+      </button>
+    </div>
+    <div class="main-card">
+      <div class="card-section monthly-card">
+        <div class="card-top-row">Expense Monthly</div>
+        <div class="graph-area">
+          <div class="month-tabs" id="month-tabs">
+            <button class="month-tab">Feb</button>
+            <button class="month-tab">Mar</button>
+            <button class="month-tab">Apr</button>
+            <button class="month-tab">May</button>
+            <button class="month-tab">Jun</button>
+            <button class="month-tab">July</button>
+            <button class="month-tab">Aug</button>
+            <button class="month-tab selected">Sept</button>
+          </div>
+          <div class="monthly-graph-num" id="monthly-budget-num">3,000 ₹</div>
+          <div class="graph-bar-row" id="graph-bar-row">
+            <!-- graph bars -->
+          </div>
+          <div class="graph-label-row">
+            <span>Month</span>
+            <span class="percent-tag" id="percent-tag">+92%</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-section">
+        <div class="home-section-title">EXPENSES INSIGHTS</div>
+        <div class="insights-list">
+          <div class="insight-row"><span><svg width="18" height="18"><rect x="4" y="6" width="10" height="8" rx="2" stroke="#fff" fill="none"/></svg>Salary</span><span>7,000₹</span></div>
+          <div class="insight-row"><span><svg width="18" height="18"><rect x="3" y="5" width="12" height="10" rx="2" stroke="#fff" fill="none"/></svg>Subscriptions</span><span>1,200₹</span></div>
+          <div class="insight-row"><span><svg width="18" height="18"><ellipse cx="9" cy="9" rx="7" ry="7" stroke="#fff" fill="none"/></svg>Savings</span><span>56,000₹</span></div>
+        </div>
+      </div>
+      <div class="card-section">
+        <div class="home-section-title">TRANSACTION HISTORY</div>
+        <div class="history-card">
+          <div class="history-list" id="transaction-list">
+            <!-- Transaction rows rendered by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-row">
+      <button class="footer-btn" id="btn-budget">Budget</button>
+      <button class="footer-btn" id="btn-categories">Categories</button>
+      <button class="footer-btn" id="btn-analytics">Analytics</button>
+    </div>
+  </div>
+  <script>
+    // Dummy monthly graph data
+    const monthlyData = [1400, 2200, 1900, 2100, 1700, 1600, 1900, 3000];
+    function renderMonthlyGraph() {
+      let barRow = document.getElementById("graph-bar-row");
+      barRow.innerHTML = "";
+      monthlyData.forEach((val, i) => {
+        let isCurrent = i === monthlyData.length - 1;
+        let height = 40 + val/80; // adjust as needed for look
+        barRow.innerHTML += `<div class="graph-bar${isCurrent ? ' current' : ''}" style="height:${height}px"></div>`;
+      });
+    }
+    renderMonthlyGraph();
+    document.getElementById("month-tabs").querySelectorAll("button").forEach((btn, i) => {
+      btn.onclick = function() {
+        document.getElementById("month-tabs").querySelectorAll("button").forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+        document.getElementById("monthly-budget-num").textContent = monthlyData[i] + " ₹";
+        // Bar highlight
+        document.getElementById("graph-bar-row").querySelectorAll(".graph-bar").forEach((bar, j) =>
+          bar.classList.toggle("current", j == i));
+        // Example percent tag change
+        document.getElementById("percent-tag").textContent = (Math.random()*100).toFixed(0)+"%";
+      };
+    });
+
+    // Dummy transaction data
+    const transactions = [
+      { title:"Travel", person:"Tour & Simple", category:"Travel", value:"-1810₹", type:"expense", date:"Jun 7" },
+      { title:"Entertainment", person:"Lorem Ipsum", category:"Entertainment", value:"+5200₹", type:"income", date:"Jun 7" },
+      { title:"Rent", person:"Lorem Ipsum", category:"Rent", value:"-23000₹", type:"expense", date:"Jun 7" },
+      { title:"Groceries", person:"Lorem Ipsum", category:"Groceries", value:"+5630₹", type:"income", date:"Jun 7" },
+      { title:"Savings", person:"Lorem Ipsum", category:"Savings", value:"-7200₹", type:"saving", date:"Jun 7" },
+      { title:"Food delivery", person:"Lorem Ipsum", category:"Food delivery", value:"-2430₹", type:"expense", date:"Jun 7" }
+    ];
+    function renderTransactions() {
+      let list = document.getElementById("transaction-list");
+      list.innerHTML = "";
+      transactions.forEach((t, idx) => {
+        let iconColor = t.type === "income" ? "tran-income" :
+                        t.type === "expense" ? "tran-expense" : "tran-saving";
+        list.innerHTML += `
+        <div class="history-row" data-idx="${idx}">
+          <div class="history-icon"><span>&#9675;</span></div>
+          <div style="flex:1">
+            <div class="tran-title">${t.title}</div>
+            <div class="tran-sub">${t.person} · ${t.date}</div>
+          </div>
+          <div class="tran-value ${iconColor}">${t.value}</div>
+          <div class="dropdown-details">
+            <div>Account: ${t.person}</div>
+            <div>Category: ${t.category}</div>
+          </div>
+        </div>`;
+      });
+      // Dropdown logic
+      list.querySelectorAll(".history-row").forEach(row => {
+        row.onclick = function(e) {
+          list.querySelectorAll(".history-row").forEach(r=>r.classList.remove("open"));
+          row.classList.toggle("open");
+        }
+      });
+    }
+    renderTransactions();
+
+    // Footer navigation
+    document.getElementById("btn-budget").onclick = () => {
+      window.location.href = "budget/b1.html";
+    };
+    document.getElementById("btn-categories").onclick = () => {
+      window.location.href = "category/c1.html";
+    };
+    document.getElementById("btn-analytics").onclick = () => {
+      window.location.href = "analytics dashboard/a1.html";
+    };
+    document.getElementById("btn-profile").onclick = () => {
+      window.location.href = "profile.html";
+    };
+    document.getElementById("btn-bell").onclick = () => {
+      window.location.href = "noti.html";
+    };
+  </script>
+</body>
+</html>

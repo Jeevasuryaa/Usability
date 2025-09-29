@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=390, initial-scale=1"/>
+  <title>Quickly Analysis</title>
+  <style>
+    html, body { margin:0; padding:0; height:100%; width:100vw; background:#dae3f0; }
+    body {
+      min-height:100vh;
+      background:#dae3f0;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+    .container {
+      width:390px;
+      height:844px;
+      background:#f7f9fa;
+      border-radius:28px;
+      box-shadow:0 2px 16px #3375c84c;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      position:relative;
+      justify-content: space-between;
+      padding-bottom: 20px;
+    }
+    .header-bg {
+      background:#3375c8;
+      height:255px;
+      width:100%;
+      position:absolute;
+      left:0;top:0;z-index:0;
+    }
+    .quick-header {
+      z-index:2;
+      position:relative;
+      padding:20px 15px 0 14px;
+      display:flex;
+      align-items:center;
+    }
+    .back-btn {
+      font-size:26px;
+      color:#fff;
+      font-weight:bold;
+      cursor:pointer;
+      margin-right:14px;
+    }
+    .header-title {
+      flex:1;
+      color:#fff;
+      font-size:22px;
+      font-weight:600;
+      text-align:center;
+      letter-spacing:.01em;
+    }
+    .header-action { width:28px; }
+    .stats-area {
+      width:93%;
+      margin:8px auto 0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      position:relative;
+      z-index:1;
+    }
+    .circle-progress {
+      width:82px;
+      height:82px;
+      border-radius:50%;
+      background:conic-gradient(#1dc272 0 90deg,#deeef3 0 360deg);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-right:8px;
+      flex-shrink: 0;
+      position:relative;
+    }
+    .circle-progress-inner {
+      width:68px;height:68px;
+      border-radius:50%;
+      background:#f7f9fa;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      font-size:13px;
+      color:#3375c8;
+      font-weight:600;
+    }
+    .circle-progress-inner svg {margin-bottom:6px;}
+    .stat-txt-list {
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      flex:1;
+      margin-left:12px;
+    }
+    .mini-stat {
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:7px;
+    }
+    .mini-icon-box {
+      width:37px;height:37px;background:rgba(255,255,255,0.10);border-radius:10px;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .mini-label-col {display:flex;flex-direction:column;font-size:12px;}
+    .mini-label {color:#dae8fa;font-weight:600;}
+    .mini-val  {font-size:18px; font-weight:bold;color:#fff;}
+    .stat-money {font-size:12.5px;font-weight:600;color:#fff;}
+    .stat-food-money {font-size:12.5px; font-weight:600; color:#ffd5dc;}
+    .white-card {
+      background:#fff;
+      border-radius:22px;
+      margin:13px auto 0 auto;
+      padding:18px 16px 13px 16px;
+      width:92%;
+      min-height:205px;
+      box-shadow:0 2px 10px #3375c813;
+      position:relative;
+      z-index:1;
+    }
+    .card-header-row {
+      display:flex;
+      align-items:center;
+      margin-bottom:4px;
+    }
+    .card-title {
+      font-size:15px;color:#3375c8;font-weight:700;margin-left:3px;
+      flex:1;
+    }
+    .graph-actions {
+      font-size:18px;color:#3375c8;
+    }
+    .bar-chart-canvas {
+      margin:8px 0 0 0; display:block;
+    }
+    .trans-list {
+      margin:18px 0 0 0;
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .trans-item {
+      display:flex;
+      align-items:center;
+      border-radius:18px;
+      background:#f2f7fd;
+      padding:11px 15px;
+      box-shadow:0 2px 11px #3375c80d;
+    }
+    .trans-icon {
+      width:38px; height:38px;
+      border-radius:12px;
+      display:flex;align-items:center;justify-content:center;
+      margin-right:10px;
+      background:#3375c8;
+      flex-shrink:0;
+    }
+    .trans-icon-blue {
+      background:#3375c8;
+    }
+    .trans-icon-green {
+      background:#0eab53;
+    }
+    .trans-icon-red {
+      background:#e26588;
+    }
+    .trans-icon svg {
+      width:22px; height:22px; color:#fff;
+    }
+    .trans-info {
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      font-size:14px;
+    }
+    .trans-title {
+      color:#2363a4;
+      font-weight:600;
+      font-size:15px;
+    }
+    .trans-sub {
+      color:#3375c8;
+      font-size:12px;
+      font-weight:500;
+    }
+    .trans-type {
+      color:#9ac4f4;
+      font-size:13px;
+      margin-left:0.6em;
+      font-weight:bold;
+    }
+    .trans-value {
+      font-size:15.7px;
+      font-weight:700;
+      margin-left:18px;
+      min-width:82px;
+      text-align:right;
+    }
+    .trans-value.negative { color:#e26588; }
+    .trans-value.positive { color:#0eab53; }
+    .trans-value.neutral { color:#b2b2b2; }
+    /* Footer buttons container */
+    .footer-buttons {
+      width:92%;
+      margin: 17px auto 0 auto;
+      display:flex;
+      justify-content:space-around;
+      gap: 10px;
+    }
+    .footer-btn {
+      flex: 1;
+      background:#3375c8;
+      color:#fff;
+      font-weight:600;
+      font-size:16px;
+      padding: 12px 0;
+      border-radius: 17px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.25s ease;
+      white-space: nowrap;
+    }
+    .footer-btn:hover {
+      background:#275a9b;
+    }
+    @media (max-width:480px) {
+      .container { height:100vh;border-radius:0; }
+      .header-bg{ height:250px;}
+      .white-card{ min-height:175px; }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="header-bg"></div>
+    <div class="quick-header">
+      <span class="back-btn" onclick="window.history.back()">&larr;</span>
+      <span class="header-title">Quickly Analysis</span>
+      <span class="header-action"></span>
+    </div>
+    <div class="stats-area">
+      <div class="circle-progress">
+        <div class="circle-progress-inner">
+          <!-- Car Icon SVG -->
+          <svg fill="none" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="11" stroke="#b3eccc" stroke-width="1" />
+            <rect x="7.5" y="9.5" width="9" height="4" rx="1.5" stroke="#3375c8" stroke-width="1"/>
+            <circle cx="8.5" cy="14.5" r="1" fill="#3375c8"/>
+            <circle cx="15.5" cy="14.5" r="1" fill="#3375c8"/>
+          </svg>
+          <span>Savings<br>On Goals</span>
+        </div>
+      </div>
+      <div class="stat-txt-list">
+        <div class="mini-stat">
+          <div class="mini-icon-box">
+            <!-- Box Icon SVG -->
+            <svg fill="none" viewBox="0 0 24 24" width="20" height="20"><rect x="4" y="7" width="16" height="10" rx="2" stroke="#fff" stroke-width="2"/><rect x="8" y="10" width="8" height="4" rx="1" stroke="#fff" stroke-width="1.6"/></svg>
+          </div>
+          <div class="mini-label-col">
+             <span class="mini-label">Revenue Last Week</span>
+             <span class="mini-val" id="stat-revenue">$4,000.00</span>
+          </div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-icon-box">
+            <!-- Cutlery Icon SVG -->
+            <svg fill="none" viewBox="0 0 24 24" width="19" height="19"><rect x="5" y="4" width="2" height="10" rx="1" fill="#fff"/><rect x="17" y="4" width="2" height="10" rx="1" fill="#fff"/><rect x="11" y="4" width="2" height="13" rx="1" fill="#ffd5dc"/></svg>
+          </div>
+          <div class="mini-label-col">
+              <span class="mini-label">Food Last Week</span>
+              <span class="mini-val" id="stat-food">-$100.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="white-card">
+      <div class="card-header-row">
+        <span class="card-title">September Expenses</span>
+        <span class="graph-actions">&#128269; &#128202;</span>
+      </div>
+      <canvas id="barChart" class="bar-chart-canvas" width="290" height="128"></canvas>
+    </div>
+    <div class="trans-list">
+      <div class="trans-item">
+        <div class="trans-icon trans-icon-green">
+          <!-- Salary Icon SVG -->
+          <svg fill="none" viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="9" ry="9" stroke="#fff" stroke-width="2"/><path d="M9 15c1 1.5 5 1.5 6 0" stroke="#fff" stroke-width="1.5"/><ellipse cx="12" cy="10" rx="3" ry="3.7" stroke="#fff" stroke-width="2"/></svg>
+        </div>
+        <div class="trans-info">
+          <span class="trans-title">Salary</span>
+          <span class="trans-sub">18:27 - April 30 <span class="trans-type"></span></span>
+        </div>
+        <div class="trans-value positive">$4,000.00</div>
+      </div>
+      <div class="trans-item">
+        <div class="trans-icon trans-icon-blue">
+          <!-- Grocery Icon SVG -->
+          <svg fill="none" viewBox="0 0 24 24"><rect x="5" y="9" width="14" height="8" rx="2" stroke="#fff" stroke-width="2"/><rect x="9" y="7" width="6" height="4" rx="2" stroke="#fff" stroke-width="1.4"/></svg>
+        </div>
+        <div class="trans-info">
+          <span class="trans-title">Groceries</span>
+          <span class="trans-sub">17:00 - April 24 <span class="trans-type"></span></span>
+        </div>
+        <div class="trans-value negative">-$100.00</div>
+      </div>
+      <div class="trans-item">
+        <div class="trans-icon trans-icon-red">
+          <!-- Rent Icon SVG -->
+          <svg fill="none" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="8" rx="2" stroke="#fff" stroke-width="2"/><rect x="9" y="10" width="6" height="4" rx="1" stroke="#fff" stroke-width="1.4"/></svg>
+        </div>
+        <div class="trans-info">
+          <span class="trans-title">Rent</span>
+          <span class="trans-sub">8:30 - April 15</span>
+        </div>
+        <div class="trans-value negative">-$674.40</div>
+      </div>
+    </div>
+    <!-- Footer buttons -->
+    <div class="footer-buttons">
+      <button id="btn-timely" class="footer-btn">Timely Analysis</button>
+      <button id="btn-categorical" class="footer-btn">Categorical Analysis</button>
+    </div>
+  </div>
+  <script>
+    // Sample data for bar chart (September expenses by week)
+    const DATA = {
+      labels: ["1st Week", "2nd Week", "3rd Week", "4th Week"],
+      expenses: [2100, 6350, 3000, 4780]
+    };
+
+    let myChart;
+    document.addEventListener("DOMContentLoaded", () => {
+      // Bar Chart
+      const ctx = document.getElementById('barChart').getContext('2d');
+      myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: DATA.labels,
+          datasets: [
+            {
+              label: 'Expenses',
+              data: DATA.expenses,
+              backgroundColor: '#3375c8',
+              borderRadius:7,
+              barThickness:30,
+            }
+          ]
+        },
+        options: {
+          responsive: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { enabled:true }
+          },
+          scales: {
+            x: {
+              ticks: { color:'#3375c8', font:{size:14, weight:700} },
+              grid:{display:false}
+            },
+            y: {
+              ticks: { color:'#b3b3b3', font:{size:13}, stepSize:5 },
+              beginAtZero:true,
+              grid:{color:"#eef4fb"},
+              min:0
+            }
+          }
+        }
+      });
+
+      // Footer buttons
+      document.getElementById('btn-timely').onclick = () => {
+        window.location.href = "a1.html";
+      };
+      document.getElementById('btn-categorical').onclick = () => {
+        window.location.href = "a2.html";
+      };
+    });
+  </script>
+</body>
+</html>

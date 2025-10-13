@@ -76,10 +76,10 @@
             <div class="progress-bar" id="food-progressbar"></div>
           </div>
           <div class="progress-labels">
-            <span class="progress-percent" id="food-progress-label">14%</span>
-            <span class="progress-budget" id="food-budget-label">$500.00</span>
+            <span class="progress-percent" id="food-progress-label">1%</span>
+            <span class="progress-budget" id="food-budget-label">$7783.00</span>
           </div>
-          <div class="progress-note" id="progress-note">30% Of Your Expenses. Looks Good.</div>
+          <div class="progress-note" id="progress-note">1% Of Your Expenses. Looks Good.</div>
         </div>
       </div>
     </div>
@@ -96,11 +96,6 @@
         <input type="text" id="edit-cat-name"/>
       </label>
       <br/><br/>
-      <label>
-        Budget Limit:<br/>
-        <input type="number" id="edit-cat-budget"/>
-      </label>
-      <br/><br/>
       <button id="save-cat-btn" style="background:#3375c8;color:#fff;border:none; border-radius:7px;padding:8px 15px;font-weight:bold;cursor:pointer;">Save</button>
       <button id="cancel-cat-btn" style="background:#eee;color:#3375c8;border:none;border-radius:7px; padding:8px 15px;margin-left:6px; font-weight:bold;cursor:pointer;">Cancel</button>
     </div>
@@ -108,8 +103,7 @@
   <script>
     // Sample expense data for demonstration
     let categoryName = "Food";
-    let foodBudget = 500;
-    let totalBalance = 500.00;
+    let totalBalance = 7783.00;   // This is the main budget, used everywhere
     let expenses = [
       { title:"Dinner", amt:26.00, date:"2024-04-30", time:"18:27", month:"April" },
       { title:"Delivery Pizza", amt:18.35, date:"2024-04-24", time:"15:00", month:"April" },
@@ -144,7 +138,7 @@
       let main = document.getElementById('main-list');
       main.innerHTML = "";
       let grouped = groupByMonth(expenses);
-      let months = Object.keys(grouped).sort((a,b)=>b.localeCompare(a)); // Descending (Apr before Mar)
+      let months = Object.keys(grouped).sort((a,b)=>b.localeCompare(a));
       months.forEach(month=>{
         main.innerHTML += `<div class="list-section"><div class="month-title">${month} <button class="calendar-btn">&#128197;</button></div>`;
         grouped[month].forEach(e=>{
@@ -168,14 +162,11 @@
       document.getElementById('edit-category-btn').onclick = function(){
         document.getElementById('edit-modal').style.display = 'flex';
         document.getElementById('edit-cat-name').value = categoryName;
-        document.getElementById('edit-cat-budget').value = totalBalance;
       };
       // Save category
       document.getElementById('save-cat-btn').onclick = function(){
         let newName = document.getElementById('edit-cat-name').value.trim();
-        let newBudget = parseFloat(document.getElementById('edit-cat-budget').value);
         if(newName) categoryName = newName;
-        if(!isNaN(newBudget) && newBudget>0) totalBalance = newBudget;
         updateHeader();
         document.getElementById('edit-modal').style.display = 'none';
       };
@@ -187,7 +178,6 @@
       renderExpenseList();
     });
 
-    // Initial rendering if DOMContentLoaded is already fired
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
       updateHeader();
       renderExpenseList();

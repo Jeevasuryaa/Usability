@@ -214,14 +214,6 @@
       text-align: center;
       letter-spacing: .01em;
     }
-    .cat-limit {
-      font-size: 12px;
-      color: #7ea3d8;
-      font-weight: 600;
-      letter-spacing: .01em;
-      text-align: center;
-      margin-top: 2px;
-    }
     .plus-tile {
       background: #e3ebfb;
       border: 2px dashed #8cbefb;
@@ -316,7 +308,7 @@
     <div class="header-bg"></div>
     <div class="header">
       <div class="header-top">
-        <span class="back" onclick="window.history.back()">&larr;</span>
+        <span class="back-btn" onclick="window.history.back()">&larr;</span>
         <span class="header-title">Categories</span>
       </div>
       <div class="budget-section">
@@ -352,27 +344,26 @@
       <div class="modal-dialog">
         <div class="modal-title">New Category</div>
         <input class="modal-input" id="category-name" placeholder="Write..."/>
-        <input class="modal-input" id="category-limit" type="number" min="1" placeholder="Enter budget limit"/>
         <button class="modal-button" onclick="addCategory()">Save</button>
         <button class="modal-button" style="margin-bottom:0;" onclick="closeModal()">Cancel</button>
       </div>
     </div>
   </div>
   <script>
-    // Predefined category data (emojis, color is via CSS)
+    // Predefined category data (emojis, color is via CSS) – limits removed
     let categories = [
-      { name:"Food", icon:"🍴", limit:500 },
-      { name:"Fashion", icon:"👔", limit:300 },
-      { name:"Bills", icon:"🧾", limit:600 },
-      { name:"Groceries", icon:"🛒", limit:650 },
-      { name:"Rent", icon:"🏠", limit:1200 },
-      { name:"Gifts", icon:"🎁", limit:200 },
-      { name:"Savings", icon:"💰", limit:900 },
-      { name:"Entertainment", icon:"🎭", limit:350 }
+      { name:"Food", icon:"🍴" },
+      { name:"Fashion", icon:"👔" },
+      { name:"Bills", icon:"🧾" },
+      { name:"Groceries", icon:"🛒" },
+      { name:"Rent", icon:"🏠" },
+      { name:"Gifts", icon:"🎁" },
+      { name:"Savings", icon:"💰" },
+      { name:"Entertainment", icon:"🎭" }
     ];
-    // Budget values for demonstration (hardcoded as per image, adjust as needed)
+    // Budget values for demonstration only
     let totalBudget = 20000.00;
-    let totalExpense = categories.reduce((sum,cat)=>sum+cat.limit,0) * 0.30; // simulate 30% spent
+    let totalExpense = 1187.40; // Hardcoded, not based on category limits now
     let totalBalance = 7783.00;
 
     function updateHeader() {
@@ -381,7 +372,7 @@
       document.getElementById('total-progress-label').textContent = Math.round((totalExpense/totalBudget)*100)+"%";
       document.getElementById('total-budget-label').textContent = "$"+totalBudget.toLocaleString(undefined,{minimumFractionDigits:2});
       document.getElementById('progress-note').textContent = Math.round((totalExpense/totalBudget)*100) + "% Of Your Expenses. Looks Good.";
-      document.getElementById('total-progressbar').style.width = Math.max(7,Math.round((totalExpense/totalBudget)*100))+"%"; // 7% minimum for visibility
+      document.getElementById('total-progressbar').style.width = Math.max(7,Math.round((totalExpense/totalBudget)*100))+"%";
     }
 
     function renderCategories() {
@@ -391,7 +382,6 @@
         grid.innerHTML += `<div class="cat-tile" onclick="onCategoryClick('${cat.name}')">
             <div class="cat-icon-block"><span>${cat.icon}</span></div>
             <div class="cat-label">${cat.name}</div>
-            <div class="cat-limit">Limit: $${cat.limit}</div>
           </div>`;
       });
       // + Button
@@ -403,17 +393,15 @@
 
     function onCategoryClick(name) {
       if(name==="Food"){
-        // Empty page for now. In a SPA, could route here:
         window.location.href = "c2.html";
       }
-      // For other categories, you can implement further routing in the future
+      // Other categories can be routed later
     }
 
     // Modal dialogs
     function openModal() {
       document.getElementById('modal-bg').classList.add('active');
       document.getElementById('category-name').value = "";
-      document.getElementById('category-limit').value = "";
       setTimeout(()=>{document.getElementById('category-name').focus();},120);
     }
     function closeModal() {
@@ -421,11 +409,10 @@
     }
     function addCategory() {
       let name = document.getElementById('category-name').value.trim();
-      let limit = Number(document.getElementById('category-limit').value.trim());
-      if(!name || !limit || limit <= 0){
-        alert("Category name and valid budget limit required!"); return;
+      if(!name){
+        alert("Category name required!"); return;
       }
-      categories.push({ name, icon:"➕", limit });
+      categories.push({ name, icon:"➕" });
       renderCategories();
       closeModal();
     }
